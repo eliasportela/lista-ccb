@@ -6,53 +6,31 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Lista CCB é um site de busca onde poderá ser econtrado as listas recentes de Batizmo, Reuniões para Mocidade, Santa Ceias, Ensaios Regionais e muito mais da Congregação Cristã no Brasil. Escolha os filtos, clique em pesquisar, e serão listas os resultados da sua pesquisa.">
+    <meta name="description" content="Lista de Batizmo e cultos da Congregação Cristã no Brasil">
     <meta name="author" content="Equipe Anonimos da CCB">
 
-    <title>Lista CCB</title>
+    <title><?=$title?></title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="http://www.listaccb.com/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?=base_url('assets/vendor/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="http://www.listaccb.com/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css')?>" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
+
     <!-- Plugin CSS -->
-    <link href="http://www.listaccb.com/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+    <link href="<?=base_url('assets/vendor/magnific-popup/magnific-popup.css')?>" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="http://www.listaccb.com/css/creative.min.css" rel="stylesheet">
+    <link href="<?=base_url('assets/css/creative2.css')?>" rel="stylesheet">
     <!-- jQuery -->
-    <script src="http://www.listaccb.com/vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="http://www.listaccb.com/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="http://www.listaccb.com/vendor/scrollreveal/scrollreveal.min.js"></script>
-    <script src="http://www.listaccb.com/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-
-    <!-- Theme JavaScript -->
-    <script src="http://www.listaccb.com/js/creative.min.js"></script>
-
+    <link rel = "stylesheet" href="<?=base_url('assets/vendor/bootstrap/css/bootstrap-select.min.css')?>">
+    
      <!-- Shortcut -->
-    <link rel="shortcut icon" type="image/x-png" href="http://www.listaccb.com/img/short.jpg">
+    <link rel="shortcut icon" type="image/x-png" href="<?=base_url('assets/img/short.jpg')?>">
 
-    <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-86505771-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-</head>
 </head>
 
 <body id="page-top">
@@ -64,29 +42,29 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="http://www.listaccb.com/cod-lista-ccb/">LISTA CCB</a>
+                <a class="navbar-brand page-scroll" href="http://www.listaccb.com">LISTA CCB</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="http://www.listaccb.com/#indexpesquisa">Pesquisa</a>
+                        <a class="page-scroll" href="<?=base_url('assets/#indexpesquisa')?>">Pesquisa</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="http://www.listaccb.com/#contact">Contato</a>
+                        <a class="page-scroll" href="<?=base_url('assets/#contact')?>">Contato</a>
                     </li>
-                    <?php if (isset($_SESSION['logado'])) { ?>
+                    <?php if ($this->session->userdata('logged')) { ?>
                     <li>
-                        <a href="http://www.listaccb.com/php/logout.php">Sair</a>
+                        <a href="<?=base_url('logout')?>">Sair</a>
                     </li>
                     <li>
-                        <a href="http://www.listaccb.com/areadousuario.php"><i class="fa fa-home fa-1x"></i></a>
+                        <a href="<?=base_url('profile')?>"><i class="fa fa-home fa-1x"></i></a>
                     </li>
                         <?php }
                         else { ?>
                     <li>
-                        <a href="http://www.listaccb.com/cod-lista-ccb/login">Login</a>
+                        <a href="<?=base_url('adm/login')?>">Login</a>
                     </li>
                          <?php  } ?>
                 </ul>
@@ -96,14 +74,13 @@
         <!-- /.container-fluid -->
     </nav>
     
-
     <header>
         <div class="header-content">
             <div class="header-content-inner">
                 <h1 id="homeHeading">Lista CCB</h1>
-                <hr>
+                <hr class="light">
                 <p>Lista CCB irá te ajudar encontrar serviços de cultos em apenas alguns filtros<br>Insira as informações e clique em pesquisar</p>
-                <a href="#indexpesquisa" class="btn btn-primary btn-xl page-scroll">Começar</a>
+                <a href="#indexpesquisa" class="btn bg-white btn-xl page-scroll">Começar</a>
             </div>
         </div>
     </header>
@@ -115,76 +92,28 @@
                     <h2 class="section-heading">Filtros de Pesquisa</h2>
                     <hr class="light">
                     <form method="GET" action="resultado.php">
-                        <table class="table">>
+                        <table class="table">
                             <tr>
-                            <!-- Tipo de Servico -->
+                                <!-- Tipo de Servico -->
                                 <td><h4><strong>Tipo de Serviço</h4></strong></td>
-                        <?php  
-                            $query = "SELECT `id_servico`, `nome_servico` FROM `tipo_servico`"; # Select de todos os servicos
-                            $stmt = $conexao->query($query); #ESTANCIAMENTO
-                             $resultado = $stmt->fetchAll();
-                        ?>
                                 <td>
-                                    <select class="form-control" id="servico" name="servico" required> 
-                            <?php foreach ($resultado as $servicos) { #envio todos os resultados para um html select?> 
-                                        <option value="<?php echo $servicos['id_servico'];?>" ><?php echo $servicos['nome_servico'];?></option>
-                                <?php } ?>
+                                    <select class="form-control" id="servico" name="servico" required>
+                                        <option value="0">Todos</option>
+                                   <?php foreach ($servicos as $servico): ?> 
+                                        <option value="<?=$servico->id_servico?>"><?=$servico->nome_servico;?></option>
+                                    <?php endforeach ?>
                                     </select>
                                 </td>
                             </tr>
-                            <!-- Tipo de Servico FIM -->
-                            <!--Selecionar o Estado-->
-                            <tr>
-                                <td><h4><strong>Estado</strong></h4></td>
-                                <td>
-                        <?php  
-                                $query = "SELECT id_estado, nome_estado FROM estado"; # Seleciona todos os estados cadastrados
-                                $stmt = $conexao->query($query); #ESTANCIAMENTO
-                                $resultado = $stmt->fetchAll();
-                                ?>
-                                    <select class="form-control" name="estado" id="estado" onchange="buscar_regiao()">
-                                        <option value="0">Selecione...</option>
-                                    <?php foreach ($resultado as $estados) { ?>
-                                        <option value="<?php echo $estados['id_estado'];?>" ><?php echo $estados['nome_estado'];?></option>
-                                        <?php } ?>
-                                    </select>
-                                </td>
-                            </tr>
-                            <!-- Select Estado FIM -->
                             <!-- Select Região -->
                             <tr>
                                 <td><h4><strong>Região</strong></h4></td>
                                 <td>
-                                    <div id="load_regiao">
-                                        <select class="form-control" id="regiao" name="regiao">
-                                            <option value="0">Selecione..</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Select Região FIM -->
-                            <!-- Select cidade -->
-                            <tr>
-                                <td><h4><strong>Cidade</strong></h4></td>
-                                <td>
-                                    <div id="load_cidade">
-                                        <select class="form-control" id="cidade" name="cidade">
-                                            <option value="0">Campo em Branco</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            <!-- FIM Select cidade -->
-                            <!-- Select periodo da pesquisa -->
-                            <tr>
-                                <td><h4><strong>Período</strong></h4></td>
-                                    <td>
-                                    <select name="periodo" class="form-control">
-                                        <option value="0">Todos</option>
-                                        <option value="1">Hoje</option>
-                                        <option value="7">1 Semana</option>
-                                        <option value="15">15 dias</option>
-                                        <option value="30">30 dias</option>
-                                        <option value="60">60 dias</option>
+                                    <select class="form-control selectpicker" data-size="2" data-live-search="true" id="anciao" nome="anciao" data-style="bg-white">
+                            
+                                    <?php foreach ($regioes as $regiao): ?> 
+                                        <option value="<?=$regiao->id_regiao?>"><?=$regiao->nome_regiao;?></option>
+                                    <?php endforeach ?>
                                     </select>
                                 </td>
                             </tr>
@@ -197,7 +126,7 @@
         </div>
     </section>
 
-    <aside class="bg-dark">
+    <aside class="bg-white">
         <div class="container text-center">
             <div class="call-to-action">
                 <h2>Área do Voluntário</h2>
@@ -233,55 +162,19 @@
     </section>
 
     <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-
+    <script src="<?=base_url('assets/vendor/jquery/jquery.min.js')?>"></script>
+    
     <!-- Bootstrap Core JavaScript -->
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.min.js')?>"></script>
 
     <!-- Plugin JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="<?=base_url('assets/vendor/scrollreveal/scrollreveal.min.js')?>"></script>
+    <script src="<?=base_url('assets/vendor/magnific-popup/jquery.magnific-popup.min.js')?>"></script>
 
     <!-- Theme JavaScript -->
-   <script src="js/creative.min.js"></script>
-
-<script>
-    function buscar_regiao(){
-      var estado = $('#estado').val();
-      if(estado){
-        var url = 'php/buscar.php?estado='+estado;
-        $.get(url, function(dataReturn) {
-          $('#load_regiao').html(dataReturn);
-        });
-      }
-    }
-</script>
-
-<!--Scrip de buscar das regioes-->
-<script>
-    function buscar_cidade(){
-      var regiao = $('#regiao').val();
-      if(regiao){
-        var url = 'php/buscar_cidade.php?regiao='+regiao;
-        $.get(url, function(dataReturn) {
-          $('#load_cidade').html(dataReturn);
-        });
-      }
-    }
-
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-86505771-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
+   <script src="<?=base_url('assets/js/creative.min.js')?>"></script>
+<script src = "<?=base_url('assets/vendor/bootstrap/js/bootstrap-select.min.js')?>"> </script>
 
 
 </body>

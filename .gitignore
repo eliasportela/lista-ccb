@@ -19,4 +19,5 @@ application/logs/*
 /vendor/
 
 application/config/*
+!application/logs/routes.php
 sytem/

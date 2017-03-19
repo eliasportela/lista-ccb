@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Exibicao extends CI_Controller {
+class Antigo extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
@@ -10,10 +10,8 @@ class Exibicao extends CI_Controller {
 
 	public function index()
 	{
-		$data['regioes'] = $this->Crud_model->ReadAll('regiao');
-		$data['servicos'] = $this->Crud_model->ReadAll('tipo_servico');
-		$header['title'] = "Lista CCB";
-		$this->load->view('index',$data);
+		$this->load->view('php/conexao');
+		$this->load->view('index');
 	}
 
 	public function Profile()

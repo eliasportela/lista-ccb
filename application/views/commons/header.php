@@ -24,8 +24,8 @@
     <link href="<?=base_url('assets/vendor/magnific-popup/magnific-popup.css')?>" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="<?=base_url('assets/css/creative.min.css')?>" rel="stylesheet">
- 	<!-- jQuery -->
+    <link href="<?=base_url('assets/css/creative2.css')?>" rel="stylesheet">
+    <!-- jQuery -->
     <script src="<?=base_url('assets/vendor/jquery/jquery.min.js')?>"></script>
 
     <!-- Bootstrap Core JavaScript -->
@@ -66,17 +66,17 @@
                     <li>
                         <a class="page-scroll" href="<?=base_url('assets/#contact')?>">Contato</a>
                     </li>
-                    <?php if (isset($_SESSION['logado'])) { ?>
+                    <?php if ($this->session->userdata('logged')) { ?>
                     <li>
-                    	<a href="<?=base_url('assets/php/logout.php')?>">Sair</a>
+                    	<a href="<?=base_url('logout')?>">Sair</a>
                     </li>
                     <li>
-                    	<a href="<?=base_url('assets/areadousuario.php')?>"><i class="fa fa-home fa-1x"></i></a>
+                    	<a href="<?=base_url('profile')?>"><i class="fa fa-home fa-1x"></i></a>
                     </li>
                         <?php }
                         else { ?>
                     <li>
-                    	<a href="<?=base_url('assets/areadousuario.php')?>">Login</a>
+                    	<a href="<?=base_url('adm/login')?>">Login</a>
                     </li>
                          <?php	} ?>
                 </ul>
