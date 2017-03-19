@@ -20,4 +20,3 @@ application/logs/*
 
 application/config/*
 !application/logs/routes.php
-sytem/
