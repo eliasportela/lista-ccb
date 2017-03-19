@@ -9,7 +9,7 @@
     <meta name="description" content="Lista de Batizmo e cultos da Congregação Cristã no Brasil">
     <meta name="author" content="Equipe Anonimos da CCB">
 
-    <title><?=$title?></title>
+    <title>Lista CCB</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?=base_url('assets/vendor/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
