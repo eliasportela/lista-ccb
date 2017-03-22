@@ -15,7 +15,7 @@
     <link href="<?=base_url('assets/vendor/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css')?>" rel="stylesheet" type="text/css">
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
@@ -64,7 +64,7 @@
                         <?php }
                         else { ?>
                     <li>
-                        <a href="<?=base_url('adm/login')?>">Login</a>
+                        <a href="<?=base_url('login')?>">Login</a>
                     </li>
                          <?php  } ?>
                 </ul>
@@ -89,36 +89,32 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">Filtros de Pesquisa</h2>
+                    <h2 class="section-heading">Buscar Lista</h2>
                     <hr class="light">
-                    <form method="GET" action="resultado.php">
-                        <table class="table">
-                            <tr>
-                                <!-- Tipo de Servico -->
-                                <td><h4><strong>Tipo de Serviço</h4></strong></td>
-                                <td>
-                                    <select class="form-control" id="servico" name="servico" required>
-                                        <option value="0">Todos</option>
+                    <form method="POST" action="<?=base_url('resultado')?>">
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <select class="form-control selectpicker" data-size="2" data-live-search="true" id="servico" name="servico" required>
+                                        <option value="0">Todos os serviços</option>
                                    <?php foreach ($servicos as $servico): ?> 
                                         <option value="<?=$servico->id_servico?>"><?=$servico->nome_servico;?></option>
                                     <?php endforeach ?>
-                                    </select>
-                                </td>
-                            </tr>
-                            <!-- Select Região -->
-                            <tr>
-                                <td><h4><strong>Região</strong></h4></td>
-                                <td>
-                                    <select class="form-control selectpicker" data-size="2" data-live-search="true" id="anciao" nome="anciao" data-style="bg-white">
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <hr class="light">
+                                <select class="form-control selectpicker" data-size="4" data-live-search="true" id="regiao" name="regiao" data-title="Escolha uma região" data-style="bg-white" required="Informe Uma região">
                             
                                     <?php foreach ($regioes as $regiao): ?> 
                                         <option value="<?=$regiao->id_regiao?>"><?=$regiao->nome_regiao;?></option>
                                     <?php endforeach ?>
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                        <hr class="light">
+                                </select>
+                            </div>
+                        </div>    
+                        <br>
                         <button class="page-scroll btn btn-default btn-xl sr-button">Procurar</button>
                      </form>
                 </div>
@@ -129,8 +125,8 @@
     <aside class="bg-white">
         <div class="container text-center">
             <div class="call-to-action">
-                <h2>Área do Voluntário</h2>
-                <a href="areadousuario.php" class="btn btn-primary btn-xl sr-button">Entrar</a>
+                <h2>Seja um Voluntário!</h2>
+                <a href="<?=base_url('contato')?>" class="btn btn-primary btn-xl sr-button">Saiba mais</a>
             </div>
         </div>
     </aside>
@@ -141,25 +137,58 @@
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <h2 class="section-heading">Junte-se a nós :)</h2>
                     <hr class="primary">
-                    <p>Seja como vários voluntários espalhados pelo Brasil e mantenha o Lista CCB atualizado com os Serviços de Culto da sua Região.</p>
+                    <h4>Mantenha o Lista CCB atualizado com os Serviços de Culto da sua Região.</h4>
+                    <h4><button class="btn bg-white" data-toggle="modal" data-target="#contato">Saiba mais</button></h4>
                 <div class="col-lg-4 col-lg-offset-2 text-center">
                     <i class="fa fa-facebook fa-3x sr-contact"></i>
-                    <a href="https://www.facebook.com/ListaCCB/"><p>www.facebook.com/ListaCCB</p></a>
+                    <a href="https://www.facebook.com/ListaCCB/"><p>www.facebook.com/listaccb</p></a>
                 </div>
                 <div class="col-lg-4 text-center">
                     <i class="fa fa-envelope-o fa-3x sr-contact"></i>
-                    <p><a href="#" class="">contato@listaccb.esy.es</a></p>
+                    <p><a href="#" class="">contato@listaccb.com</a></p>
                 </div>
             </div>
         </div>
         <p class="text-center">Este site é administrado por membros da CCB e não tem vínculo com a instituição ou com o ministério.</p>
          <ul class="list-inline quicklinks text-center">
-                        <li><a href="#">Política de Privacidade</a>
+                        <li><a href="<?=base_url('politica-de-privacidade')?>">Política de Privacidade</a>
                         </li>
-                        <li><a href="#">Termos de uso</a>
+                        <li><a href="<?=base_url('termos-de-uso')?>">Termos de uso</a>
                         </li>
                     </ul>
     </section>
+    
+    <div class="container-fluid">
+      <div class="modal fade" id="contato" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3 class="text-uppercase">Junte-se a nós :)</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
+                        <h4>Vire um voluntário e ajude muitos que usam o Lista CCB<h4>
+                        <p>
+                            Gostou do lista ccb? Existem várias formas de ajudar.<br>Enviaremos todas elas no seu e-mail.
+                        </p>
+                        <input type="email" name="email" class="form-control" placeholder="Informe seu email">
+                        <br>
+                        <button class="btn btn-lg bg-primary">Enviar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 
     <!-- jQuery -->
     <script src="<?=base_url('assets/vendor/jquery/jquery.min.js')?>"></script>

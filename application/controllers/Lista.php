@@ -43,16 +43,17 @@ class Lista extends CI_Controller {
 				'id_regiao' => $dataRegister['regiao'],
 				'id_usuario' => $this->session->userdata('id_usuario'));
 				
-				$res = $this->Crud_model->Insert('lista',$dataModel);
+				$res = $this->Crud_model->InsertId('lista',$dataModel);
 			
 			if($res){
 				$data['error'] = null;
 				// os dados voltam vazios novamente depois da confirmação
+				redirect(base_url('adm/lista-inserir?id='.$res));
 				$date = date('Y-m-d');
 				$data['dataRegister'] = array('data' => $date, 'regiao' => '');
 				$data['success'] = "Lista Inserida com sucesso";
 			}else{
-				$data['error'] = "Não foi possivel inserir o Usuário";
+				$data['error'] = "Não foi possivel inserir a LIsta";
 			}
 		}
 		//cidades
@@ -78,7 +79,7 @@ class Lista extends CI_Controller {
 		$sql = "SELECT l.id_lista, l.data_lista, r.nome_regiao, u.user
 				FROM lista l
 				INNER JOIN regiao r ON (l.id_regiao = r.id_regiao)
-				INNER JOIN usuario u ON (l.id_usuario = u.id_usuario)
+				LEFT OUTER JOIN usuario u ON (l.id_usuario = u.id_usuario)
 				WHERE l.fg_ativo = 1 ORDER BY l.data_lista DESC";
 		//consultando
 		$data['lista'] = $this->Crud_model->Query($sql);

@@ -1,4 +1,4 @@
-        <section id="cadastroProduto" class="bg-primary">
+        <section id="cadastroProduto" class="bg-white">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12"> 
@@ -8,7 +8,7 @@
                                 <h2 class="text-center">Cadastro de Usuarios</h2>
                             </div>
                             <div class="col-md-3 text-right">
-                                <a href="<?=base_url('adm/usuarios')?>"><button class="btn btn-xl bg-white" id="">Usuários</button></a>
+                                <a href="<?=base_url('adm/usuarios')?>"><button class="btn btn-xl bg-primary" id="">Usuários</button></a>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                                 <input type="text" id="nome" class="form-control" name="nome" placeholder="Nome" required="" value="<?=$dataRegister['nome']?>" />
                                 <br>
                                 <!--Cidades -->
-                                <select type="select" class="form-control selectpicker" data-size="3" name="cidade" id="cidade" required="" data-live-search="true" title="Selecione a cidade">
+                                <select type="select" class="form-control selectpicker" data-size="3" name="cidade" id="cidade" required="" data-live-search="true" title="Selecione a cidade" data-style="bg-primary">
                                 <?php  foreach ($cidades as $cidade): ?>
                                   <option value="<?=$cidade->id_cidade?>"
                                      <?php /*Voltando a informaçao para o usuarios*/
@@ -57,7 +57,7 @@
                                 <input type="text" id="user" class="form-control" name="user" required="" placeholder="Usuário" value="<?=$dataRegister['user']?>" />
                                 <br>
                                 <!--Tipo de usuario-->
-                                <select type="select" class="form-control selectpicker" name="tipo_user" id="tipo_user" required="" title="Tipo de Usuário">
+                                <select type="select" class="form-control selectpicker" name="tipo_user" id="tipo_user" required="" title="Tipo de Usuário" data-style="bg-primary">
                                 <?php  foreach ($tipo_user as $tipos): ?>
                                   <option value="<?=$tipos->id_tipo_usuario?>" 
                                     <?php /*Voltando a informaçao para o usuarios*/
@@ -72,8 +72,8 @@
                                 <!--Senha-->
                                 <input type="password" id="senha" class="form-control" name="senha" required="" placeholder="Senha" value="<?=$dataRegister['senha']?>" />
                                 <br>
-                                <input type="submit" class="btn btn-xl bg-white" value="Inserir" />
-                                <a class="btn btn-xl bg-white" href="<?=base_url('profile')?>">Voltar</a>
+                                <a class="btn btn-xl btn-primary" href="<?=base_url('adm/usuarios')?>">Voltar</a>
+                                <input type="submit" class="btn btn-xl btn-primary" value="Inserir" />
                                 </div>
                             </form>      
                         </div>

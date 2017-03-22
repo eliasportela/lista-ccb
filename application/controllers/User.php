@@ -57,7 +57,7 @@ public function Login()
     }else{
 
 	    $data['title'] = "Lista CCB | Login";
-		$this->load->view('adm/commons/header',$data);
+			$this->load->view('adm/commons/header',$data);
 	    $this->load->view('adm/user/login',$data);
 	    $this->load->view('adm/commons/footer');
 	}
@@ -188,12 +188,12 @@ public function Login()
 		
 	$nivel_user = 1; //Nivel requirido para visualizar a pagina
 
-	if (($this->session->userdata('logged')) and ($this->session->userdata('id_tu') <= $nivel_user)) {
+	if (($this->session->userdata('logged')) and ($this->session->userdata('id_tipo_usuario') <= $nivel_user)) {
 		
 		#usuarios
-		$sql = "SELECT u.id_user, u.nome, u.user, t.ds_tu 
+		$sql = "SELECT u.id_usuario, u.nome, u.user, t.ds_tipo_usuario 
 		FROM usuario u 
-		INNER JOIN tipo_user t ON (t.id_tu = u.id_tu)
+		INNER JOIN tipo_usuario t ON (t.id_tipo_usuario = u.id_tipo_usuario)
 		WHERE u.fg_ativo = 1;";
 		//consultando
 		$data['users'] = $this->Crud_model->Query($sql);
@@ -219,7 +219,7 @@ public function Login()
 			$data['success'] = NULL;
 			//validar dados
 			$this->form_validation->set_rules('nome','Nome','required|min_length[4]|trim');
-			$this->form_validation->set_rules('id_tu','Tipo de Usuário','required|is_natural_no_zero|trim',array('is_natural_no_zero' => 'Selecione um Tipo de usuário'));
+			$this->form_validation->set_rules('id_tipo_usuario','Tipo de Usuário','required|is_natural_no_zero|trim',array('is_natural_no_zero' => 'Selecione um Tipo de usuário'));
 
 			// Se ainda não foi inserido o formulario
 			if ($this->form_validation->run() == FALSE) {
@@ -239,15 +239,15 @@ public function Login()
 					}else{ //Se existir o parametro, faz a consulta no banco de dados
 						$id = (int) $this->input->get('id');
 						//formular consulta
-						$dataModel = array('id_user' => $id);
+						$dataModel = array('id_usuario' => $id);
 						$result = $this->Crud_model->Read('usuario',$dataModel);
 
 						// Se houver resultado, devolve o array com dados da consulta
 						if ($result) {
 						$data['dataRegister'] = array(
 							'nome' => $result->nome, 
-							'id_user' => $result->id_user,
-							'id_tu' => $result->id_tu);
+							'id_usuario' => $result->id_usuario,
+							'id_tipo_usuario' => $result->id_tipo_usuario);
 						}
 						//die(var_dump($data['dataRegister']));
 					}
@@ -263,7 +263,7 @@ public function Login()
 			}else{
 
 				$dataRegister = $this->input->post();
-				$par = array('id_user' => $dataRegister['id_user']);
+				$par = array('id_usuario' => $dataRegister['id_usuario']);
 				$dataModel = array(
 					'nome' => $dataRegister['nome'], 
 					'id_tu' => $dataRegister['id_tu']);
@@ -282,7 +282,7 @@ public function Login()
 			// Exibir telas para o usuario
 
 			//Cabecalho
-			$header['title'] = "SI | Editar Usuario";
+			$header['title'] = "Lista CCB | Editar Usuario";
 			$this->load->view('adm/commons/header',$header);
 			
 			//Se houver resultados na pesquisa, mostrar a pagina de edicao
@@ -327,7 +327,7 @@ public function Login()
 				// Id recebe o paramentro da url
 				$id = (int) $this->input->get('id');
 				$dataModel = array('fg_ativo' => 0);
-				$par = array('id_user' => $id);
+				$par = array('id_usuario' => $id);
 				$result = $this->Crud_model->Update('usuario',$dataModel,$par);
 
 				//Se ocorrer a remocao

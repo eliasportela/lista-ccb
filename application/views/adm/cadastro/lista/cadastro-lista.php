@@ -1,4 +1,5 @@
 	<!--Secao cadastro-->
+ <br>
 	<section id="cadastro">
 		<div class="container">
 			<div class="row">
@@ -49,6 +50,7 @@
 					</div>
 				</div>
 			</div>	
-		</div>								
+		</div>
+		 <br><br><br>
 	</section>
 	<!-- devs-->
