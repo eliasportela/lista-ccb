@@ -39,14 +39,14 @@
                             foreach ($culto[$cont] as $resultado): // se nao for ensaio regional
                                 if($culto['id_servico'] != 5): ?>
                                 <tr>
-                                    <td><h4><strong><?=$resultado->nome_cidade?></strong></h4></td>
+                                    <td><h4><strong><?=$resultado->nome_cidade.' ('.$resultado->ds_igreja.')'?></strong></h4></td>
                                     <td><h4><strong><?=date('d-m', strtotime($resultado->data)) . ' ' . date("H:i",strtotime($resultado->horario))?></strong></h4></td>
                                     <td><h4><strong><?=$resultado->anciao?></strong></h4></td>
                                 </tr>
                             <?php else: // se for ensaio regional
                                 ?>
                                     <tr>
-                                    <td><h4><strong><?=$resultado->nome_cidade?></strong></h4></td>
+                                    <td><h4><strong><?=$resultado->nome_cidade .' ('.$resultado->ds_igreja.')'?></strong></h4></td>
                                     <td><h4><strong><?=date('d-m', strtotime($resultado->data)) . ' ' . date("H:i",strtotime($resultado->horario))?></strong></h4></td>
                                     <td><h4><strong><?=$resultado->encarregado?></strong></h4></td>
                                 </tr>
@@ -61,8 +61,12 @@
         <br><br >
         <?php $cont++; } ?>
         <div class="row text-center">
-            <h3>Continue Pesquisando <a href="http://listaccb.com/#indexpesquisa"><button class="btn bg-primary">Voltar</button></a></h3>
-            <h3>Receber em meu e-mail <a href="#" data-toggle="modal" data-target="#contato"><button class="btn bg-primary">Enviar</button></a></h3>
+            <h3>Continue Pesquisando</h3>
+            <a href="http://listaccb.com/#indexpesquisa"><button class="btn bg-primary">Voltar</button></a>
+            <h3>Receba em seu e-mail</h3>
+            <a href="#" data-toggle="modal" data-target="#contato"><button class="btn bg-primary">Enviar</button></a>
+            <h3>Seja um Voluntário!</h3>
+            <a href="<?=base_url('contato')?>" class="btn bg-primary">Saiba mais</a>
         </div>
     </div>
 </section>
@@ -72,26 +76,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">Junte-se a nós :)</h2>
-                    <hr class="primary">
-                    <p>Seja como vários voluntários espalhados pelo Brasil e mantenha o Lista CCB atualizado com os Serviços de Culto da sua Região.</p>
-                <div class="col-lg-4 col-lg-offset-2 text-center">
-                    <i class="fa fa-facebook fa-3x sr-contact"></i>
-                    <a href="https://www.facebook.com/ListaCCB/"><p>www.facebook.com/listaccb</p></a>
-                </div>
-                <div class="col-lg-4 text-center">
-                    <i class="fa fa-envelope-o fa-3x sr-contact"></i>
-                    <p><a href="#" class="">contato@listaccb.com</a></p>
+                    <h4>Curta nossa pagina no Facebook</h4>
+                    <div class="col-lg-4 col-lg-offset-2 text-center">
+                      <i class="fa fa-facebook fa-3x sr-contact"></i>
+                      <a href="https://www.facebook.com/ListaCCB/" target="_blank"><p>www.facebook.com/listaccb</p></a>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                      <i class="fa fa-envelope-o fa-3x sr-contact"></i>
+                      <p><a href="mailto:contato@listaccb.com?Subject=Lista CCB%20again" target="_top">contato@listaccb.com</a></p>
+                    </div>
                 </div>
             </div>
-        </div>
         <p class="text-center">Este site é administrado por membros da CCB e não tem vínculo com a instituição ou com o ministério.</p>
-         <ul class="list-inline quicklinks text-center">
-                        <li><a href="#">Política de Privacidade</a>
-                        </li>
-                        <li><a href="#">Termos de uso</a>
-                        </li>
-                    </ul>
+          <ul class="list-inline quicklinks text-center">
+              <li><a href="#">Política de Privacidade</a>
+              </li>
+              <li><a href="#">Termos de uso</a>
+              </li>
+          </ul>
+      </div>
     </section>
 
     <div class="container-fluid">
@@ -109,10 +112,18 @@
                     <div class="col-sm-10">
                         <h4>Gostou do lista ccb?<h4>
                         <p>
-                            Que tal receber uma notificação em seu e-mail quando uma lista da sua região for inserida?<br>
+                            Receba em seu e-mail uma notificação quando for inserida uma lista da sua região!<br>
                         </p>
-                        <form method="POST" action="<?=base_url('adm/contato')?>">
-                            <input type="email" name="email" class="form-control" placeholder="Informe-nos o seu email">
+                        <form method="POST" action="<?=base_url('adm/news')?>">
+                            <select class="form-control selectpicker" data-size="4" data-live-search="true" id="regiao" name="regiao" data-style="bg-primary">                           
+                            <?php foreach ($regioes as $regiao): ?> 
+                                <option value="<?=$regiao->id_regiao?>"><?=$regiao->nome_regiao .' - '. $regiao->sigla_estado;?></option>
+                            <?php endforeach ?>
+                            </select>
+                            <br><br>
+                            <input type="text" name="nome" class="form-control" placeholder="Nome" required>
+                            <br>
+                            <input type="email" name="email" class="form-control" placeholder="E-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
                             <br>
                             <button class="btn btn-lg bg-primary">Enviar</button>
                         </form>

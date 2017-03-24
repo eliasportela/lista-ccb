@@ -10,7 +10,14 @@ class Exibicao extends CI_Controller {
 
 	public function index()
 	{
-		$data['regioes'] = $this->Crud_model->ReadAll('regiao');
+		$sql = "SELECT r.nome_regiao, r.id_regiao, e.sigla_estado 
+		FROM regiao r
+		INNER JOIN estado e ON (e.id_estado = r.id_estado)
+		WHERE r.fg_ativo = 1 ORDER BY 3";
+		
+		$data['regioes'] = $this->Crud_model->Query($sql);
+		//die(var_dump($data['regioes']));
+		
 		$data['servicos'] = $this->Crud_model->ReadAll('tipo_servico');
 		$header['title'] = "Lista CCB";
 		$this->load->view('index',$data);
@@ -20,15 +27,24 @@ class Exibicao extends CI_Controller {
 	{
 
 		//Formulando o algoritmo de pesquisa com as informaçoes do usuario
-		$id_servico = $this->input->post('servico');
-		$id_regiao = $this->input->post('regiao');
+		//verificando os paramentros passados
+		if (($this->input->get('servico') == null) and ($this->input->get('regiao')==null)){
+			redirect('http://listaccb.com/');
+		}
+		
+		$id_servico = (int)$this->input->get('servico');
+		$id_regiao = (int)$this->input->get('regiao');
 		$dia_pesquisa = date('Y-m-d');
 
 		//Buscando dados para formular tela de busca
 		
 		$par = array('id_regiao' => $id_regiao);
 		$data['regiao'] = $this->Crud_model->Read('regiao',$par);
-
+		
+		if(($data['regiao'] == false) or $id_servico > 6){
+			redirect('http://listaccb.com/');
+		}
+			
 		// Se for informado um servico em particular 
 		if ($id_servico > 0):
 
@@ -75,22 +91,34 @@ class Exibicao extends CI_Controller {
 				INNER JOIN presbitero e ON (e.id_presbitero = lc.id_encarregado)
 				WHERE lc.fg_ativo = 1 AND lc.data >= '$dia_pesquisa' AND r.id_regiao = $id_regiao AND lc.id_servico = $cont"; //contador que ira fazer a pesquisa
 
-				$result = $this->Crud_model->Query($sql);
-
-				if ($result) { //se tiver resultado, entao faz a pesquisa do servico de culto, monta o array, sendo q a montagem somente sera realizada com os servicos que tiverem cadastros
+				$resultado = $this->Crud_model->Query($sql);
+				
+			if ($resultado) { //se tiver resultado, entao faz a pesquisa do servico de culto, monta o array, sendo q a montagem somente sera realizada com os servicos que tiverem cadastros
 					$par = array('id_servico' => $cont);
 					$servico = $this->Crud_model->Read('tipo_servico',$par);
-					$servicos[$cont2] = array('nome_servico' =>$servico->nome_servico, 'id_servico' => $id_servico, $cont2 => $result);
+					$servicos[$cont2] = array('nome_servico' =>$servico->nome_servico, 'id_servico' => $servico->id_servico, $cont2 => $resultado);
 					$cont2++;
 				}
-
 				$cont++;
 			}
 
 			//die(var_dump($servicos));
-			$data['cultos'] = $servicos;
+			if ($cont2 > 0){
+				$data['cultos'] = $servicos;
+				//die(var_dump($data['cultos']));
+			}else{
+				$servicos[0] = array('nome_servico' => 'Listas de Batismo e diversos.', 'id_servico' => 1, 0 => null);
+				$data['cultos'] = $servicos;
+			}
 			endif;
-
+		
+		$sql = "SELECT r.nome_regiao, r.id_regiao, e.sigla_estado 
+		FROM regiao r
+		INNER JOIN estado e ON (e.id_estado = r.id_estado)
+		WHERE r.fg_ativo = 1 ORDER BY 3";
+		
+		$data['regioes'] = $this->Crud_model->Query($sql);
+		
 		$this->load->view('commons/header'); 
 		$this->load->view('page-principal/pesquisa',$data); 
 	}
@@ -121,6 +149,58 @@ class Exibicao extends CI_Controller {
 		$this->load->view('commons/footer',$header);
 		
 	}
-
+	
+	public function News()
+	{
+		
+		$dataRegister = $this->input->post();
+		
+		$dataModel = array ('nome_contato' => $dataRegister['nome'],'email_contato' => $dataRegister['email'],'id_regiao' => $dataRegister['regiao']);
+		$result = $this->Crud_model->InsertId('contato',$dataModel);
+		
+		
+		if($result){
+			$par = array('id_contato' => $result);
+			$contato = $this->Crud_model->Read('contato',$par);
+			$data['contato'] = $contato->nome_contato;
+			$this->load->library('email');
+         
+        //Inicia o processo de configuração para o envio do email
+        $config['protocol'] = 'mail'; // define o protocolo utilizado
+        $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
+        $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+         
+        $config['mailtype'] = 'html';
+ 
+        // Inicializa a library Email, passando os parâmetros de configuração
+        $this->email->initialize($config);
+        
+        // Define remetente e destinatário
+        $this->email->from('contato@listaccb.com', 'Lista CCB'); // Remetente
+        $this->email->to($contato->email_contato,$contato->nome_contato); // Destinatário
+ 
+        // Define o assunto do email
+        $this->email->subject('Confirmação de Inscrição');
+ 
+        /*
+         * Se o usuário escolheu o envio com template, passa o conteúdo do template para a mensagem
+         * caso contrário passa somente o conteúdo do campo 'mensagem'
+         */
+        $this->email->message($this->load->view('adm/mail/confirmacao',$data,TRUE));
+         
+        /*
+         * Se o envio foi feito com sucesso, define a mensagem de sucesso
+         * caso contrário define a mensagem de erro, e carrega a view home
+         */
+        if($this->email->send())
+        {
+            redirect('http://listaccb.com/');
+        }
+        else
+        {
+            return("Erro ao cadastrar");
+        }
+		}
+	}
 
 }
