@@ -6,6 +6,7 @@ class Exibicao extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('User_model');
+		$this->load->library('form_validation');
 	}
 
 	public function index()
@@ -152,55 +153,130 @@ class Exibicao extends CI_Controller {
 	
 	public function News()
 	{
-		
-		$dataRegister = $this->input->post();
-		
-		$dataModel = array ('nome_contato' => $dataRegister['nome'],'email_contato' => $dataRegister['email'],'id_regiao' => $dataRegister['regiao']);
-		$result = $this->Crud_model->InsertId('contato',$dataModel);
-		
-		
-		if($result){
-			$par = array('id_contato' => $result);
-			$contato = $this->Crud_model->Read('contato',$par);
-			$data['contato'] = $contato->nome_contato;
-			$this->load->library('email');
-         
-        //Inicia o processo de configuração para o envio do email
-        $config['protocol'] = 'mail'; // define o protocolo utilizado
-        $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
-        $config['validate'] = TRUE; // define se haverá validação dos endereços de email
-         
-        $config['mailtype'] = 'html';
- 
-        // Inicializa a library Email, passando os parâmetros de configuração
-        $this->email->initialize($config);
-        
-        // Define remetente e destinatário
-        $this->email->from('contato@listaccb.com', 'Lista CCB'); // Remetente
-        $this->email->to($contato->email_contato,$contato->nome_contato); // Destinatário
- 
-        // Define o assunto do email
-        $this->email->subject('Confirmação de Inscrição');
- 
-        /*
-         * Se o usuário escolheu o envio com template, passa o conteúdo do template para a mensagem
-         * caso contrário passa somente o conteúdo do campo 'mensagem'
-         */
-        $this->email->message($this->load->view('adm/mail/confirmacao',$data,TRUE));
-         
-        /*
-         * Se o envio foi feito com sucesso, define a mensagem de sucesso
-         * caso contrário define a mensagem de erro, e carrega a view home
-         */
-        if($this->email->send())
-        {
-            redirect('http://listaccb.com/');
-        }
-        else
-        {
-            return("Erro ao cadastrar");
-        }
+
+		if($this->input->post() == false) {
+
+			redirect(base_url());
+
 		}
+
+		$dataRegister = $this->input->post();
+		$data['error'] = null;
+		$data['sucess'] = null;
+		$dataModel = array ('nome_contato' => $dataRegister['nome'],'email_contato' => $dataRegister['email'],'id_regiao' => $dataRegister['regiao']);
+		$nome = $dataRegister['nome'];
+		$email = $dataRegister['email'];
+		$regiao = $dataRegister['regiao'];
+		
+		$sql = "SELECT COUNT(1) as i, id_contato, fg_ativo FROM contato WHERE email_contato like '$email'";
+
+		$exist = $this->Crud_model->Query($sql);
+
+		//die(var_dump($exist));
+		if($exist[0]->i > 0) {
+			
+			if($exist[0]->fg_ativo == 0){
+				$par = array('id_contato' => $exist[0]->id_contato);
+				$dataModel = array('fg_ativo' => 1);
+				$res = $this->Crud_model->Update('contato',$dataModel,$par);
+				if ($res) {
+					$data['sucess'] = "E-mail ".$email." foi cadastrado em nossa base de dados";
+				}else{
+					$data['error'] = "Erro ao inserrir e-mail";
+				}
+			}else{
+				$data['error'] = "O email '".$email."' já se encontra cadastrado.";
+ 				}
+
+ 		}else{
+					
+				$this->load->library('email');
+	         
+		        //Inicia o processo de configuração para o envio do email
+		        $config['protocol'] = 'mail'; // define o protocolo utilizado
+		        $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
+		        $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+		         
+		        $config['mailtype'] = 'html';
+		 
+		        // Inicializa a library Email, passando os parâmetros de configuração
+		        $this->email->initialize($config);
+		        
+		        // Define remetente e destinatário
+		        $this->email->from('contato@listaccb.com', 'Lista CCB'); // Remetente
+		        $this->email->to($email,$nome); // Destinatário
+		 
+		        // Define o assunto do email
+		        $dia = date('d-m-Y');
+		        $this->email->subject('Confirmação de Inscrição Lista CCB '.$dia);
+		 
+		        /*
+		         * Se o usuário escolheu o envio com template, passa o conteúdo do template para a mensagem
+		         * caso contrário passa somente o conteúdo do campo 'mensagem'
+		         */
+		        $this->email->message($this->load->view('adm/mail/msg-confirmacao',$data,TRUE));
+		         
+		        /*
+		         * Se o envio foi feito com sucesso, define a mensagem de sucesso
+		         * caso contrário define a mensagem de erro, e carrega a view home
+		         */
+		        $u = true;
+		        if($u/*$this->email->send()*/){
+		            $data['sucess'] = "Enviamos a Confirmação do seu cadastro em seu e-mail, verifique sua caixa de entrada.";
+		            $result = $this->Crud_model->Insert('contato',$dataModel);
+		         }else {
+		            $data['error'] = "Não conseguimos enviar confirmação para o e-mail ".$email;
+		        }
+
+		}
+
+		$header['title'] = "Lista CCB | Registro de email";
+		$this->load->view('adm/commons/header',$header);
+		$this->load->view('adm/mail/confirmacao',$data);
+		$this->load->view('adm/commons/footer',$data);		
+
 	}
+
+	public function Cancelar(){
+		
+		$data['error'] = null;
+		$data['sucess'] = null;
+		
+
+		$this->form_validation->set_rules('email','E-mail','required|valid_email|trim');
+	    
+	    if($this->form_validation->run() == FALSE)
+	   	{
+	      $data['error'] = validation_errors();
+	    }
+	    else
+	    {
+	    	$email = $this->input->post('email');
+
+	    	$sql = "SELECT COUNT(1) as i, id_contato FROM contato WHERE email_contato LIKE '$email' and fg_ativo = 1";
+	    	$res = $this->Crud_model->Query($sql);
+
+	    	
+	    	if($res[0]->i > 0){
+	    		$par = array('id_contato' => $res[0]->id_contato);
+	    		$dataModel = array('fg_ativo' => 0);
+	    		$res = $this->Crud_model->Update('contato',$dataModel,$par);
+	    		if($res){
+	    			$data['sucess'] = "Cancelamento ocorrido com sucesso";
+	    		}else{
+	    			$data['error'] = "Erro na solicitação de dados. Envie um email para contato@listaccb.com";
+	    		}
+	    	}else{
+	    		$data['error'] = "E-mail não encontrado";
+	    	}
+
+	    }
+
+		$this->load->view('commons/header',$data);
+		$this->load->view('adm/mail/cancelar-assinatura',$data);
+		$this->load->view('commons/footer',$data);
+	}
+
+
 
 }

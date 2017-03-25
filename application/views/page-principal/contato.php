@@ -13,7 +13,8 @@
                     <h4 class="text-left">Estamos precisando de:</h4>
                     <ul class="text-left">
                         <li>Desenvolvedores backend PHP ou frontend (HTML, CSS e JavaScripty)</li>
-                        <li>Valuntários para cadastros de Listas</li>
+                        <li>Vo
+                        luntários para cadastros de Listas</li>
                         <li>Envio de listas para nossos voluntarios cadastrar</li>
                     </ul>
                     <br>

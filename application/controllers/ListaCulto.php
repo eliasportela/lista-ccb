@@ -18,13 +18,11 @@ class ListaCulto extends CI_Controller {
 			//validar dados
 			
 			$this->form_validation->set_rules('data','Data do Serviço de culto','required|trim');
-	    $this->form_validation->set_rules('servico','Servico','required|is_natural_no_zero|trim',array('is_natural_no_zero' => ' Você não selecionou a Cidade'));
+	    	$this->form_validation->set_rules('servico','Servico','required|is_natural_no_zero|trim',array('is_natural_no_zero' => ' Você não selecionou a Cidade'));
 			$this->form_validation->set_rules('horario','horario','required|is_natural_no_zero|trim',array('is_natural_no_zero' => ' Você não selecionou o horario'));
 			$this->form_validation->set_rules('cidade','Cidade','required|is_natural_no_zero|trim',array('is_natural_no_zero' => ' Você não selecionou a Cidade'));
 			$this->form_validation->set_rules('igreja','igreja','required|is_natural_no_zero|trim',array('is_natural_no_zero' => ' Você não selecionou a igreja'));
 			$this->form_validation->set_rules('anciao','anciao','required|trim',array('is_natural_no_zero' => ' Você não selecionou o anciao'));
-			$this->form_validation->set_rules('encarregado','encarregado','required|is_natural_no_zero|trim',array('is_natural_no_zero' => ' Você não selecionou o encarregado'));
-
 
 
 			
@@ -35,10 +33,12 @@ class ListaCulto extends CI_Controller {
 						redirect(base_url('adm/listas'));
 					
 					}else{ //Se existir o parametro, faz a consulta no banco de dados
+						$cod = (int) $this->input->get('cod');
+
 						$id = (int) $this->input->get('id');
 						$data['id_lc'] = $id;
 						// Buscando novmanete a lista pela id url
-						$sql = "SELECT l.data_lista, r.nome_regiao, l.id_regiao
+						$sql = "SELECT l.data_lista, r.id_regiao, r.nome_regiao, l.id_regiao
 							FROM lista l
 							INNER JOIN regiao r ON (r.id_regiao = l.id_regiao)
 							WHERE l.id_lista = $id";
@@ -46,7 +46,7 @@ class ListaCulto extends CI_Controller {
 
 						// Se a url estiver correta
 						if($lista){ 
-							$data['lista'] = array('data' => $lista[0]->data_lista, 'regiao' => $lista[0]->nome_regiao);
+							$data['lista'] = array('data' => $lista[0]->data_lista, 'regiao' => $lista[0]->nome_regiao, 'id_regiao' => $lista[0]->id_regiao);
 						//die(var_dump($data['lista']));
 						}else{ // nao estando redireciona para a page
 							redirect(base_url('adm/listas'));
@@ -110,26 +110,31 @@ class ListaCulto extends CI_Controller {
 					$result = $this->Crud_model->Read('lista_cultos',$par); //Busca o culto no banco de dados
 					if($result){ //se houver resultado, entao pega o ultimo id
 							$data['dataForm'] = array ( 
-																'servico' => $result->id_servico,
-																'horario' => $result->id_horario,
-																'data' => $result->data
-																); //
+											'servico' => $result->id_servico,
+											'horario' => $result->id_horario,
+											'data' => $result->data
+											); //
 						}else{ //nao havendo, devolve o padrao
 						$data['dataForm'] = array ( 
-																'servico' => '1',
-																'horario' => '3',
-																'data' => date('Y-m-d')
-																); 
+											'servico' => '1',
+											'horario' => '3',
+											'data' => date('Y-m-d')
+											); 
+					}
+					if ($this->input->get('cod') == 1) {
+						$data['error'] = "Não foi possivel realizar o cadastro";
 					}
 				}
 				else{
 				// Retorna os dados para o usuario nao precisar digitar tudo novamente
 				$data['dataForm'] = $this->input->post();
 				}
-				//die(var_dump($data['dataForm']));
 			}else{
 				$dataRegister = $this->input->post();
-				
+				//die(var_dump($dataRegister));
+				if(!isset($dataRegister['encarregado'])){
+					$dataRegister['encarregado'] = '1';
+				}
 				$dataModel = array(
 					'data' => $dataRegister['data'], 
 					'id_lista' => $id,
@@ -156,6 +161,7 @@ class ListaCulto extends CI_Controller {
 			$header['title'] = "Lista CCB | Inserir Cultos";
 			$this->load->view('adm/commons/header',$header);
 			$this->load->view('adm/cadastro/lista-culto/inserir-exibir',$data);
+			//$this->load->view('php/lista-culto');
 			$this->load->view('adm/commons/footer');
 
 		else: // Se não estiver logado redireciona para tela de login..
@@ -292,22 +298,7 @@ class ListaCulto extends CI_Controller {
 	}
 
 		
-	public function Teste(){
-		// retornara de acordo com a cidade do select input
-		if ($this->input->get('id') == TRUE ) {
 
-			$id_cidade = $this->input->get('id');
-			$sql = "SELECT `id_igreja`, `ds_igreja` FROM `igreja` WHERE id_cidade = $id_cidade ORDER BY ds_igreja";
-			$resultado = $this->Crud_model->Query($sql);
-			
-			?>
-			<select class="form-control" name="igreja">
-			 <?php foreach ($resultado as $igrejas): ?>
-				<option value="<?=$igrejas->id_igreja;?>"><?=$igrejas->ds_igreja;?></option>
-				<?php endforeach ?>
-			</select> <?php
-			}
-	}
 
 	public function Remover(){
 		
@@ -327,12 +318,16 @@ class ListaCulto extends CI_Controller {
 				// Id recebe o paramentro da url
 				$id = (int) $this->input->get('id');
 				$dataModel = array('fg_ativo' => 0);
-				$par = array('id_igreja' => $id);
-				$result = $this->Crud_model->Update('igreja',$dataModel,$par);
+				$par = array('id_lista_culto' => $id);
+				$result = $this->Crud_model->Update('lista_cultos',$dataModel,$par);
+
+				//Recuperando lista
+				$sql = "SELECT id_lista FROM lista_cultos WHERE id_lista_culto = $id";
+				$result = $this->Crud_model->Query($sql);
 
 				//Se ocorrer a remocao
 				if ($result) {
-					redirect('adm/igrejas?cod=2');
+					redirect(base_url('adm/lista-inserir?id='.$result[0]->id_lista));
 				}else{
 					die('Erro na Remocao');
 				}

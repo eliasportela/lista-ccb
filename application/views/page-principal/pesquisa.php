@@ -114,7 +114,7 @@
                         <p>
                             Receba em seu e-mail uma notificação quando for inserida uma lista da sua região!<br>
                         </p>
-                        <form method="POST" action="<?=base_url('adm/news')?>">
+                        <form method="POST" action="<?=base_url('assinatura')?>">
                             <select class="form-control selectpicker" data-size="4" data-live-search="true" id="regiao" name="regiao" data-style="bg-primary">                           
                             <?php foreach ($regioes as $regiao): ?> 
                                 <option value="<?=$regiao->id_regiao?>"><?=$regiao->nome_regiao .' - '. $regiao->sigla_estado;?></option>
