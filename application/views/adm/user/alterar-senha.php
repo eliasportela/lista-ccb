@@ -2,7 +2,7 @@
             <div class="container">
               <div class="row">
               <div class="text-center">
-                <h2 class="text-center">Alterar Senha</h2>
+                <h2 class="text-center"><i class="fa fa-user"></i> Alterar Senha</h2>
             </div>
             <div class="container">
                 <div class="col-lg-12">
@@ -24,18 +24,17 @@
                             }
                           ?>
                             <hr>
-                            <form method="POST" action="<?=base_url('adm/alterar-senha')?>">
-                                <p><label for="senha">Senha</label></p>
+                            <br>
+                            <form method="POST" action="<?=base_url('alterar-senha')?>">
+                                <label for="senha">Senha</label>
                                 <input type="password" id="senha" class="form-control" name="senha" required="" placeholder="Digite a senha atual" />
-                                <br><p><label for="senha">Nova Senha</label></p>
-                                <input type="password" id="NovaSenha" class="form-control" name="novaSenha" required="" placeholder="Digite a nova senha" />
-                                <br><p><label for="confSenha">Confirmar Senha</label></p>
-                                <input type="password" id="confSenha" class="form-control" name="confSenha" required="" placeholder="Confirme a nova senha" />
-                                <div class="col-lg-12 text-center">
+                                <label for="senha">Nova Senha</label>
+                                <input type="password" id="NovaSenha" class="form-control" name="novaSenha" required="" placeholder="Nova senha" />
+                                <label for="confSenha">Confirmar Senha</label>
+                                <input type="password" id="confSenha" class="form-control" name="confSenha" required="" placeholder="Confirme nova senha"/>
                                     <br>
-                                    <input type="submit" class="btn btn-xl" value="Alterar" />
-                                    <a href="<?=base_url('adm')?>"><h3>Voltar</h3></a>
-                                </div>
+                                    <a class="btn btn-lg btn-primary" href="<?=base_url('profile')?>">Voltar</a>
+                                    <button class="btn btn-lg btn-primary">Alterar</button>
                             </form>      
                         </div>
                     </div>

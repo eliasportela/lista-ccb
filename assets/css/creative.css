@@ -25,6 +25,7 @@ a {
   transition: all 0.35s;
   color: #000;
 }
+
 a:hover,
 a:focus {
   color: #000;
@@ -360,8 +361,8 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
   color: white;
-  background-color: #ee4b28;
-  border-color: #ed431f;
+  background-color: rgba(28,149,113,0.8);
+  border-color: rgb(28,149,113);
 }
 .btn-primary:active,
 .btn-primary.active,
@@ -426,4 +427,9 @@ body {
 }
 table .table .table-responsive  {
   background-color: black;
+}
+
+a.lc {
+    color: #337ab7;
+    text-decoration: underline;
 }

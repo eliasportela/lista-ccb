@@ -42,14 +42,62 @@ class Api extends CI_Controller {
 		}
 	}
 
-	public function CadastroIgreja(){
-		$this->form_validation->set_rules('igreja','Igreja','required|is_natural_no_zero|trim',array('is_natural_no_zero' => 'Selecione uma Cidade'));
+	public function ListarAnciao(){
+		// retornara de acordo com a cidade do select input
+			$id_funcao = 1;
+			$par = array('id_funcao' => $id_funcao);
+			$resultado = $this->Crud_model->ReadPar('presbitero',$par);
+			?>
+			<select class="form-control selectpicker" data-size="2" data-live-search="true" id="anciao_sel" name="anciao" data-style="bg-primary">
+				<?php foreach ($resultado as $anciao): ?>
+					<option value="<?=$anciao->id_presbitero?>" <?php if ($anciao->id_presbitero == 0): echo 'selected'; endif;?> > <?=$anciao->nome?></option>
+				<?php endforeach ?>
+			</select>
+			<?php
+	}
 
+	public function ListarEncarregado(){
+		// retornara de acordo com a cidade do select input
+			$id_funcao = 2;
+			$par = array('id_funcao' => $id_funcao);
+			$resultado = $this->Crud_model->ReadPar('presbitero',$par);
+			?>
+			<select class="form-control selectpicker" data-size="2" data-live-search="true" id="encarregado_sel" name="encarregado" data-style="bg-primary">
+				<?php foreach ($resultado as $encarregado): ?>
+					<option value="<?=$encarregado->id_presbitero?>" <?php if ($encarregado->id_presbitero == 1): echo 'selected'; endif; ?>><?=$encarregado->nome?></option>
+				<?php endforeach ?>
+			</select>
+			<?php
+	}
+
+	public function CadastroIgreja(){
+		
+		$ds_igreja = $_REQUEST['ds_igreja'];
+		$id_cidade = $_REQUEST['id_cidade'];
+
+		$dataModal= array('ds_igreja' => $ds_igreja, 'id_cidade' => $id_cidade);
+		$result = $this->Crud_model->Insert('igreja',$dataModal);
+
+		if ($result) {
+			echo "1";
+		}else{
+			echo "0";
+		}
 	}
 
 	public function CadastroPresbitero(){
-		$this->form_validation->set_rules('cidade','Cidade','required|is_natural_no_zero|trim',array('is_natural_no_zero' => 'Selecione uma Cidade'));
 		
+		$nome_presbitero = $_REQUEST['nome_presbitero'];
+		$id_funcao = $_REQUEST['id_funcao'];
+
+		$dataModal= array('nome' => $nome_presbitero, 'id_funcao' => $id_funcao);
+		$result = $this->Crud_model->Insert('presbitero',$dataModal);
+
+		if ($result) {
+			echo "1";
+		}else{
+			echo "0";
+		}
 	}
 
 	public function CadastroCidade(){

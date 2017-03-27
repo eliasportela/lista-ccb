@@ -43,7 +43,7 @@
 						</div>
 						<!--Cidade-->
 						<div class="col-md-2 col-sm-3 text-center">
-							<label><h3><strong><a href="#" data-toggle="modal" data-target="#Modal_cidade" title="Cadastrar">Cidade</a></strong></h3></label>
+							<label><h3><strong><a href="#" data-toggle="modal" data-target="#Modal_cidade" title="Cadastrar" class="lc">Cidade</a></strong></h3></label>
 							<div id="load_cidade">
 								<select class="form-control selectpicker" data-size="2" data-live-search="true" id="cidade_sel" name="cidade" data-style="bg-primary" data-title="Selecione uma cidade" onchange="buscar_igreja()">
 								<?php foreach ($cidades as $cidade): ?>	
@@ -54,7 +54,7 @@
 						</div>
 						<!--Igreja-->
 						<div class="col-md-2 col-sm-4 text-center">
-							<label><h3><a href="#" data-toggle="modal" data-target="#Modal_igreja" title="Cadastrar"><strong>Igreja </strong></a></h3></label>
+							<label><h3><a href="#" data-toggle="modal" data-target="#Modal_igreja" title="Cadastrar" class="lc"><strong>Igreja </strong></a></h3></label>
 							<div id="load_igreja">
 							<select class="form-control selectpicker" data-size="2" data-live-search="true" id="igreja_sel" name="igreja" data-style="bg-primary" data-title="Selecione uma cidade">
 								<option value="0">Selecione uma cidade</option>
@@ -63,21 +63,26 @@
 						</div>
 						<!--Anciao-->
 						<div class="col-md-2 col-sm-4 text-center">
-							<label><h3><a href="#" data-toggle="modal" data-target="#Modal_presbitero" title="Cadastrar"><strong>Ancião </strong></a></h3></label>
-							<select class="form-control selectpicker" data-size="2" data-live-search="true" id="anciao_sel" name="anciao" data-style="bg-primary">
-								<?php foreach ($ancioes as $anciao): ?>
-									<option value="<?=$anciao->id_presbitero?>" <?php if ($anciao->id_presbitero == 0): echo 'selected'; endif;?> > <?=$anciao->nome?></option>
-								<?php endforeach ?>
-							</select>
+
+							<label><h3><a href="#" data-toggle="modal" data-target="#Modal_presbitero" title="Cadastrar" class="lc"><strong>Ancião </strong></a></h3></label>
+							<div id="load_anciao">
+								<select class="form-control selectpicker" data-size="2" data-live-search="true" id="anciao_sel" name="anciao" data-style="bg-primary">
+									<?php foreach ($ancioes as $anciao): ?>
+										<option value="<?=$anciao->id_presbitero?>" <?php if ($anciao->id_presbitero == 0): echo 'selected'; endif;?> > <?=$anciao->nome?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
 						</div>
 						<!--Encarregado-->
 						<div class="col-md-2 col-sm-4 text-center">
-							<label><h3><a href="#" data-toggle="modal" data-target="#Modal_presbitero" title="Cadastrar"><strong>Encarregado </strong></a></h3></label>
-							<select class="form-control selectpicker" data-size="2" data-live-search="true" id="encarregado_sel" name="encarregado" data-style="bg-primary">
-								<?php foreach ($encarregados as $encarregado): ?>
-									<option value="<?=$encarregado->id_presbitero?>" <?php if ($encarregado->id_presbitero == 1): echo 'selected'; endif; ?>><?=$encarregado->nome?></option>
-								<?php endforeach ?>
-							</select>
+							<label><h3><a href="#" data-toggle="modal" data-target="#Modal_presbitero" title="Cadastrar" class="lc"><strong>Encarregado </strong></a></h3></label>
+							<div id="load_encarregado">
+								<select class="form-control selectpicker" data-size="2" data-live-search="true" id="encarregado_sel" name="encarregado" data-style="bg-primary">
+									<?php foreach ($encarregados as $encarregado): ?>
+										<option value="<?=$encarregado->id_presbitero?>" <?php if ($encarregado->id_presbitero == 1): echo 'selected'; endif; ?>><?=$encarregado->nome?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
 						</div>
 						<br
 					</div>
@@ -163,20 +168,21 @@
         </div>
         <div class="modal-body">
         	<div class="row text-center">
-        	<div class="col-sm-1"></div>
-        	<div class="col-sm-10">
+        		<div class="col-sm-1"></div>
+        		<div class="col-sm-10">
 			  		<!--Select regiao-->
-					<label for="cidade"><h4><strong>Nome da Cidade 1</strong></h4></label>
-					<div class="alert alert-danger text-center" role="alert">A cidade sera incluida no estado e região referente a essa lista.<br>Para outros estados e regiões, acesse o menu cidades.</div>
+					<label for="cidade"><h4><strong>Nome da Cidade</strong></h4></label>
 					<br>
+					<div id="cidade_alert" >
+						<div class="alert alert-danger text-center" role="alert">A cidade sera incluida no estado e região referente a essa lista.<br>Para outros estados e regiões, acesse o menu cidades.</div>
+					</div>
 					<input type="text" class="form-control" name="cidade" id="cidade_nome_cidade" required="" placeholder="Ex: Patrocinio Paulista"> 
 					</br>
 					<input type="hidden" name="regiao" id="cidade_id_regiao" value="<?=$lista['id_regiao']?>">
 					<input type="hidden" name="lista" value="<?=$id_lc?>">
 					<button class="btn btn-lg btn-primary" data-dismiss="modal">Cancelar</button>
-					<button class="btn btn-lg btn-primary" data-dismiss="modal" id="inserir_cidade">Ins</button>
-					<button class="btn btn-lg btn-primary">Inserir</button>
-			</div>
+					<button class="btn btn-lg btn-primary" data-dismiss="modal" id="inserir_cidade">Inserir</button>
+				</div>
 			</div>
 		</div>
       </div>
@@ -198,19 +204,17 @@
         	<div class="row text-center">
         	<div class="col-sm-1"></div>
         	<div class="col-sm-10">
-			  	<form method="POST" action="<?=base_url('adm/lc/igreja')?>">
-					<!--Select regiao-->
-					<select class="form-control selectpicker" data-size="2" data-live-search="true" id="cidade" name="cidade" data-style="bg-primary" data-title="Selecione a Cidade">
-						<?php foreach ($cidades as $cidade): ?>
-							<option value="<?=$cidade->id_cidade?>"><?=$cidade->nome_cidade?></option>
-						<?php endforeach ?>
-					</select>
-					<label for="cidade"><h4><strong>Descriçao da Igreja</strong></h4></label>
-					<input type="text" class="form-control" name="igreja" id="cidade" required="" placeholder="Ex: Vila Nova"> 
-					</br>
-					<button class="btn btn-lg btn-primary" data-dismiss="modal">Cancelar</button>
-					<button class="btn btn-lg btn-primary">Inserir</button>
-				</form>
+		  		<!--Select regiao-->
+				<select class="form-control selectpicker" data-size="2" data-live-search="true" id="igreja_cidade" name="cidade" data-style="bg-primary" data-title="Selecione a Cidade">
+					<?php foreach ($cidades as $cidade): ?>
+						<option value="<?=$cidade->id_cidade?>"><?=$cidade->nome_cidade?></option>
+					<?php endforeach ?>
+				</select>
+				<label for="cidade"><h4><strong>Descriçao da Igreja</strong></h4></label>
+				<input type="text" class="form-control" name="igreja" id="igreja_ds_igreja" required="" placeholder="Ex: Vila Nova"> 
+				</br>
+				<button class="btn btn-lg btn-primary" data-dismiss="modal">Cancelar</button>
+				<button class="btn btn-lg btn-primary" data-dismiss="modal" id="inserir_igreja">Inserir</button>
 			</div>
 			</div>
 		</div>
@@ -219,7 +223,7 @@
   </div>
 </div>
 
-<!-- Modal presbitero -->
+<!-- Modal Ancaio -->
 <div class="container-fluid">
   <div class="modal fade" id="Modal_presbitero" role="dialog">
     <div class="modal-dialog">
@@ -231,28 +235,31 @@
         </div>
         <div class="modal-body">
         	<div class="row text-center">
-        	<div class="col-sm-1"></div>
-        	<div class="col-sm-10">
-			  	<form method="POST" action="<?=base_url('adm/lc/presbitero')?>">
-					<!--Select -->
+        		<div class="col-sm-1"></div>
+        		<div class="col-sm-10">
+			  		<!--Select -->
 					<label for="funcao"><h4><strong>Função</strong></h4></label>
-					<select class="form-control" id="funcao" name="funcao">
+					<select class="form-control" id="presbitero_id_funcao" name="funcao">
 						<option value="1">Ancião</option>
 						<option value="2">Encarregado Regional</option>
 					</select>
 					<label for="prebitero"><h4><strong>Nome do Presbitero</strong></h4></label>
-					<input type="text" class="form-control" name="presbitero_modal" id="prebitero" required="" placeholder="Ex: Daniel Campos" name="nome"> 
+					<input type="text" class="form-control" name="presbitero_modal" id="presbitero_nome" required="" placeholder="Ex: Daniel Campos" name="nome"> 
 					</br>
 					<button class="btn btn-lg btn-primary" data-dismiss="modal">Cancelar</button>
-					<button class="btn btn-lg btn-primary">Inserir</button>
-				</form>
-			</div>
+					<button class="btn btn-lg btn-primary" data-dismiss="modal" id="inserir_presbitero">Inserir</button>
+				
+				</div>
 			</div>
 		</div>
       </div>
     </div>
   </div>
 </div>
+
+
+
+
 <script src="<?=base_url('assets/js/adm/lista-culto.js')?>"></script>
 
 

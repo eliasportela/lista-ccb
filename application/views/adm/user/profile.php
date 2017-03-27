@@ -18,8 +18,8 @@
 								<dd><?=$user->nome_cidade?><dd>
 								<br>
 								<dt>
-									<a href=""><button class="btn bg-primary">Editar</button></a>
-									<a href=""><button class="btn bg-primary">Alterar Senha</button></a>
+									<a href="<?=base_url('profile-editar')?>"><button class="btn btn-primary">Editar</button></a>
+									<a href="<?=base_url('alterar-senha')?>"><button class="btn btn-primary">Alterar Senha</button></a>
 								</dt>
 							</dl>
 						</div>

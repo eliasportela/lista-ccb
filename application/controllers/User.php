@@ -149,8 +149,7 @@ public function Login()
 			$data['error'] = validation_errors();
 		}else{
 			$dataRegister = $this->input->post();
-			$dataUser = $this->User_model->GetUser($this->session->userdata('id'));
-			
+			$dataUser = array('id_usuario' => $this->session->userdata('id_usuario'));
 			$res = $this->User_model->Validar($dataUser); 
 			
 			foreach($res as $result)
@@ -167,19 +166,19 @@ public function Login()
 						$data['success'] = "Senha alterada com sucesso!";
 						$data['error'] = null;
 					}else{
-					$data['error'] = "As senhas não são iguais";
+					$data['error'] = "As senhas não correspondem";
 					}
 				}
 	        else {
-	          	$data['error'] = "Senha incorreta.";
+	          	$data['error'] = "Senha atual incorreta.";
 	        }
 	    }		
 	}
 
-		$data['user'] = $this->User_model->GetUser($this->session->userdata('id'));
-		$data['title'] = "MO | Cadastro-Funcionario";
-		$this->load->view('adm/commons/header',$data);
-	    $this->load->view('adm/alterar-senha',$data);
+		$data['user'] = $this->User_model->GetUser($this->session->userdata('id_usuario'));
+		$header['title'] = "Lista CCB | Alterar Senha";
+		$this->load->view('adm/commons/header',$header);
+	    $this->load->view('adm/user/alterar-senha',$data);
 	    $this->load->view('adm/commons/footer');
 	}
 
@@ -214,7 +213,7 @@ public function Login()
 		
 		$nivel_user = 1; //Nivel requirido para visualizar a pagina
 
-		if (($this->session->userdata('logged')) and ($this->session->userdata('id_tu') <= $nivel_user)) {
+		if (($this->session->userdata('logged')) and ($this->session->userdata('id_tipo_usuario') <= $nivel_user)) {
 
 			$data['success'] = NULL;
 			//validar dados
@@ -266,7 +265,7 @@ public function Login()
 				$par = array('id_usuario' => $dataRegister['id_usuario']);
 				$dataModel = array(
 					'nome' => $dataRegister['nome'], 
-					'id_tu' => $dataRegister['id_tu']);
+					'id_tipo_usuario' => $dataRegister['id_tu']);
 				$res = $this->Crud_model->Update('usuario',$dataModel,$par);
 				//die(var_dump($res));
 				if ($res) {
@@ -288,7 +287,7 @@ public function Login()
 			//Se houver resultados na pesquisa, mostrar a pagina de edicao
 			if($result){
 				//Buscando os tipos de usuarios
-				$data['tipo_user'] = $this->Crud_model->ReadAll('tipo_user');
+				$data['tipo_user'] = $this->Crud_model->ReadAll('tipo_usuario');
 				$this->load->view('adm/cadastro/usuario/editar-user',$data);
 	
 			}else{ // Se não tiver resultado na pesquisa, exibe mensagem de erro (Possivelmente mudou a url)
@@ -340,6 +339,19 @@ public function Login()
 		}else{
 			redirect(base_url('adm/login'));
 		}
+	}
+
+	public function EditarMyUser()
+	{
+		$data['error'] = null;
+		$data['success'] = null;
+		$user = array('id_usuario' => $this->session->userdata('id_usuario'));
+		$data['user'] = $this->Crud_model->Read('usuario',$user);
+		$data['cidades'] = $this->Crud_model->ReadAll('cidade');
+		$header['title'] = "Editar Profile";
+		$this->load->view('adm/commons/header', $header);
+		$this->load->view('adm/user/editar-my-user',$data);
+		$this->load->view('adm/commons/footer');	
 	}
 
 }

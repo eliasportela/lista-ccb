@@ -1,3 +1,4 @@
+        <br>
         <section id="cadastroProduto">
             <div class="container">
                 <div class="row">
@@ -34,6 +35,7 @@
                             }
                           ?>
                             <hr>
+                            <br><br>
                             <form method="POST" action="<?=base_url('adm/editar-usuario')?>">
                                 <!-- Nome -->
                                 <input type="text" id="nome" class="form-control" name="nome" placeholder="NOME" required="" value="<?=$dataRegister['nome']?>" />
@@ -49,7 +51,7 @@
                                 </select>
                                 <br>
                                 <!-- Id_user -->
-                                <input type="hidden" name="id_user" value="<?=$dataRegister['id_user']?>">
+                                <input type="hidden" name="id_user" value="<?=$dataRegister['id_usuario']?>">
                                 <div class="col-lg-12 text-center">
                                     <br>
                                     <input type="submit" class="btn btn-xl" value="Editar" />
@@ -61,3 +63,4 @@
                 </div>
             </div>
         </section>
+        <br><br>
