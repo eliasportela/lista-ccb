@@ -165,6 +165,7 @@ class Exibicao extends CI_Controller {
 		$data['sucess'] = null;
 		$dataModel = array ('nome_contato' => $dataRegister['nome'],'email_contato' => $dataRegister['email'],'id_regiao' => $dataRegister['regiao']);
 		$nome = $dataRegister['nome'];
+		$data['nome'] = $nome;
 		$email = $dataRegister['email'];
 		$regiao = $dataRegister['regiao'];
 		

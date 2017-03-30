@@ -22,6 +22,7 @@
 
     <!-- Plugin CSS -->
     <link href="<?=base_url('assets/vendor/magnific-popup/magnific-popup.css')?>" rel="stylesheet">
+    <link href="<?=base_url('assets/css/jquery.Jcrop.min.css')?>" rel="stylesheet">
 
     <!-- Theme CSS -->
     <link href="<?=base_url('assets/css/creative.css')?>" rel="stylesheet">
@@ -33,12 +34,15 @@
 
     <!-- Plugin JavaScript -->
     <script src="<?=base_url('assets/vendor/jquery/jquery.easing.min.js')?>"></script>
+    <script src="<?=base_url('assets/js/jquery.Jcrop.min.js')?>"></script>
+    
     <link rel = "stylesheet" href="<?=base_url('assets/vendor/bootstrap/css/bootstrap-select.min.css')?>">
     <script src="<?=base_url('assets/vendor/scrollreveal/scrollreveal.min.js')?>"></script>
     <script src="<?=base_url('assets/vendor/magnific-popup/jquery.magnific-popup.min.js')?>"></script>
 
     <!-- Theme JavaScript -->
     <script src="<?=base_url('assets/js/creative.min.js')?>"></script>
+    <script src="<?=base_url('assets/js/imagem-perfil.js')?>"></script>
 
      <!-- Shortcut -->
     <link rel="shortcut icon" type="image/x-png" href="<?=base_url('assets/img/short.jpg')?>">
