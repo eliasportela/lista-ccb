@@ -12,41 +12,35 @@
     <title><?=$title?></title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="<?=base_url('assets/vendor/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css')?>" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
 
     <!-- Plugin CSS -->
-    <link href="<?=base_url('assets/vendor/magnific-popup/magnific-popup.css')?>" rel="stylesheet">
     <link href="<?=base_url('assets/css/jquery.Jcrop.min.css')?>" rel="stylesheet">
 
     <!-- Theme CSS -->
     <link href="<?=base_url('assets/css/creative.css')?>" rel="stylesheet">
  	<!-- jQuery -->
-    <script src="<?=base_url('assets/vendor/jquery/jquery.min.js')?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.min.js')?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="<?=base_url('assets/vendor/jquery/jquery.easing.min.js')?>"></script>
     <script src="<?=base_url('assets/js/jquery.Jcrop.min.js')?>"></script>
     
-    <link rel = "stylesheet" href="<?=base_url('assets/vendor/bootstrap/css/bootstrap-select.min.css')?>">
-    <script src="<?=base_url('assets/vendor/scrollreveal/scrollreveal.min.js')?>"></script>
-    <script src="<?=base_url('assets/vendor/magnific-popup/jquery.magnific-popup.min.js')?>"></script>
-
+    <link rel = "stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
     <!-- Theme JavaScript -->
-    <script src="<?=base_url('assets/js/creative.min.js')?>"></script>
     <script src="<?=base_url('assets/js/imagem-perfil.js')?>"></script>
 
      <!-- Shortcut -->
     <link rel="shortcut icon" type="image/x-png" href="<?=base_url('assets/img/short.jpg')?>">
-
+	
 </head>
 
 <body id="page-top">
@@ -58,18 +52,12 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="http://www.listaccb.com">LISTA CCB</a>
+                <a class="navbar-brand page-scroll" href="https://www.listaccb.com">LISTA CCB</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a class="page-scroll" href="<?=base_url('assets/#indexpesquisa')?>">Pesquisa</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="<?=base_url('assets/#contact')?>">Contato</a>
-                    </li>
                     <?php if ($this->session->userdata('logged')) { ?>
                     <li>
                     	<a href="<?=base_url('logout')?>">Sair</a>

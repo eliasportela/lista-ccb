@@ -1,4 +1,4 @@
-    <section class="bg-white">
+<section class="bg-white">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
@@ -23,19 +23,17 @@
 							<br>
 							<table class="table table-responsive table-hover text-center">
 								<tr>
-									<th><h4 class="text-center"><strong>Data da Lista</strong></h4></th>
+									<th><h4 class="text-center"><strong>Mês Lista</strong></h4></th>
 									<th><h4 class="text-center"><strong>Região</strong></h4></th>
-									<th><h4 class="text-center"><strong>Cadastrado por</strong></h4></th>					
-									<th><h4 class="text-center"><strong>Opção</strong></h4></th>
+									<th><h4 class="text-center"><strong>Cadastrado por</strong></h4></th>
 								</tr>
 								
 								<?php foreach ($lista as $listas): 
 									?>
-									<tr>
-										<td><?=date("d/m/Y", strtotime($listas->data_lista));?></td>
-										<td><?=$listas->nome_regiao;?></td>
-										<td><?=$listas->user;?></td>
-										<td><a href="<?=base_url('adm/lista-inserir?id='.$listas->id_lista)?>"><i class="fa fa-external-link-square fa-2x" title="Abrir Lista"></i></a> | <a href="<?=base_url('adm/editar-lista/?id='.$listas->id_lista)?>"><i class="fa fa-edit fa-2x" title="Editar Lista"></i></a></td>
+									<tr onclick="opcaoLista(<?=$listas->id_lista?>)" title="Clique para acessar">
+										<td><h5><?=$listas->nome_mes . " - " . $listas->data_lista?></h5></td>
+										<td><h5><?=$listas->nome_regiao;?></h5></td>
+										<td><h5><?=$listas->user;?></h5></td>
 									</tr>
 								<?php endforeach ?>
 							</table>
@@ -45,3 +43,36 @@
 			</div>
 		</div>
 	</section>
+
+	<!-- Modal Selecao -->
+	<div class="container-fluid">
+	  <div class="modal fade" id="opcoesModal" role="dialog">
+	    <div class="modal-dialog">
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header text-center">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <p class="text-uppercase">Escolha uma das opções!</p>
+	        </div>
+	        <div class="modal-body">
+	        	<div class="row text-center">
+	        		<div class="col-sm-1"></div>
+	        		<div class="col-sm-10">
+				  		<!--Select -->
+				  		<button class="btn btn-lg btn-primary" id="removerLista" value="0">Remover <i class="fa fa-remove"></i></button>
+				  		<button class="btn btn-lg btn-primary" id="editarLista" value="0">Editar <i class="fa fa-edit"></i></button>
+						<button class="btn btn-lg btn-primary" id="acessarLista" value="0">Abrir <i class="fa fa-edit"></i></button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal">Cancelar</button>
+			</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+
+    <script src="<?=base_url('assets/js/adm/lista-culto.js')?>"></script>

@@ -70,19 +70,34 @@ class Igreja extends CI_Controller {
 
 	if (($this->session->userdata('logged')) and ($this->session->userdata('id_tipo_usuario') <= $nivel_user)) {
 		
-		#usuarios
-		$sql = "SELECT i.id_igreja, i.ds_igreja, c.nome_cidade 
+		#igrejas
+		$this->form_validation->set_rules('cidade','Nome da Cidade','required|min_length[4]|trim');
+
+		if($this->form_validation->run() == FALSE){
+
+			$sql = "SELECT i.id_igreja, i.ds_igreja, c.nome_cidade 
 				FROM igreja i
 				INNER JOIN cidade c ON (c.id_cidade = i.id_cidade)
-				WHERE i.fg_ativo = 1 ORDER BY c.nome_cidade";
+				WHERE c.fg_ativo = 1 ORDER BY c.id_cidade desc limit 10";
+
+			$data['dataForm'] = ''; //Campo pesqusia vazio
+
+		}else {
+			$dataRegister = $this->input->post('cidade');
+
+			$sql = "SELECT i.id_igreja, i.ds_igreja, c.nome_cidade 
+				FROM igreja i
+				INNER JOIN cidade c ON (c.id_cidade = i.id_cidade)
+				WHERE c.fg_ativo = 1  and c.nome_cidade like '%$dataRegister%' ORDER BY c.nome_cidade desc limit 10";
+			$data['dataForm'] = $dataRegister; //Campo pesqusia com o que foi pesquisado
+		}
+
 		//consultando
 		$data['igrejas'] = $this->Crud_model->Query($sql);
-
 		//die(var_dump($data['cidades']));
 		$header['title'] = "Lista CCB | Igrejas";
 		$this->load->view('adm/commons/header',$header);
 		$this->load->view('adm/cadastro/igreja/igrejas',$data);
-		$this->load->view('adm/commons/footer');
 		
 			}else{
 			redirect(base_url('login'));

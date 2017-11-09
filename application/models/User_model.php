@@ -56,7 +56,8 @@ class User_model extends CI_Model
 
 
 	function Validar($data){
-		$this->db->select('*')->from('usuario')->where('user',$data->user);
+		//die(var_dump($data));
+		$this->db->select('*')->from('usuario')->where('id_usuario',$data['id_usuario']);
 		$results = $this->db->get()->result();
 		return $results;
 	}

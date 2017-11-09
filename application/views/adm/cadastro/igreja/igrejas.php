@@ -15,17 +15,23 @@
                            	<div class="alert alert-success text-center" role="alert">Igreja Removida com sucesso</div>
 							<hr>
 							<?php endif; ?>
-							<div class="row">
-								<div class=" col-md-2 text-left">
-									<a href="<?=base_url('profile#menu')?>" class="btn bg-primary"><i class="fa fa-chevron-left"></i> Voltar</a>
+							<form action="<?=base_url('adm/igrejas')?>" method="post">
+								<div class="row">
+									<div class=" col-md-2 text-left">
+										<a href="<?=base_url('profile#menu')?>" class="btn bg-primary"><i class="fa fa-chevron-left"></i> Voltar</a>
+									</div>
+									<div class="col-md-8">
+										<input type="text" class="form-control" alt="lista-igrejas" placeholder="Para buscar a igreja digite aqui o nome da cidade. Ex.. Jacui" name="cidade" value="<?=$dataForm?>" autofocus>
+									</div>
+									<div class=" col-md-2 text-right">
+										<a href="<?=base_url('adm/cadastro-igreja')?>" class="btn bg-primary">Nova Igreja <i class="fa fa-plus"></i></a>
+									</div>
 								</div>
-								<div class="col-md-8">
-									<input type="text" class="form-control input-search" alt="lista-igrejas" placeholder="Buscar nessa Lista">
+								<br>
+								<div class="row text-center">
+									<button class="btn btn-primary btn-lg">Pesquisar</button>
 								</div>
-								<div class=" col-md-2 text-right">
-									<a href="<?=base_url('adm/cadastro-igreja')?>" class="btn bg-primary">Nova Igreja <i class="fa fa-plus"></i></a>
-								</div>
-							</div>
+							</form>
 							<br>
 							<table class="table table-responsive table-hover text-center">
 							<thead>
@@ -36,7 +42,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach ($igrejas as $igreja): 
+								<?php 
+								if ($igrejas):
+								foreach ($igrejas as $igreja): 
 									?>
 									<tr>
 										<td><?=$igreja->ds_igreja;?></td>
@@ -47,7 +55,15 @@
 										<a onclick="return confirm('Deseja realmente excluir essa igreja?');" 
 										href="<?=base_url('adm/remover-igreja?id='.$igreja->id_igreja)?>"><i class="fa fa-remove fa-2x" title="Remover Igreja"></i></a></td>
 									</tr>
-								<?php endforeach ?>
+								<?php endforeach;
+								else:
+								?>
+									<tr>
+										<td></td>
+										<td><h4>Nenhuma cidade encontrada!</h4></td>
+										<td></td>
+									</tr>
+								<?php endif; ?>
 								</tbody>
 							</table>
 						</div>

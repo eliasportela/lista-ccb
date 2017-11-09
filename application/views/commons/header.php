@@ -31,6 +31,15 @@
      <!-- Shortcut -->
     <link rel="shortcut icon" type="image/x-png" href="<?=base_url('assets/img/short.jpg')?>">
 
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-86505771-1', 'auto');
+  ga('send', 'pageview');
+</script>
 </head>
 
 <body id="page-top">
@@ -42,17 +51,17 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="http://www.listaccb.com">LISTA CCB</a>
+                <a class="navbar-brand page-scroll" href="<?=base_url('adm.listaccb.com')?>">LISTA CCB</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="http://listaccb.com/#indexpesquisa">Pesquisa</a>
+                        <a class="page-scroll" href="<?=base_url('adm.listaccb.com#indexpesquisa')?>">Pesquisa</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="http://listaccb.com/#contact">Contato</a>
+                        <a class="page-scroll" href="<?=base_url('adm.listaccb.com#contact')?>">Contato</a>
                     </li>
                     <?php if ($this->session->userdata('logged')) { ?>
                     <li>

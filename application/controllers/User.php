@@ -57,9 +57,7 @@ public function Login()
     }else{
 
 	    $data['title'] = "Lista CCB | Login";
-			$this->load->view('adm/commons/header',$data);
-	    $this->load->view('adm/user/login',$data);
-	    $this->load->view('adm/commons/footer');
+		$this->load->view('adm/user/login',$data);
 	}
 
     
@@ -151,7 +149,7 @@ public function Login()
 			$dataRegister = $this->input->post();
 			$dataUser = array('id_usuario' => $this->session->userdata('id_usuario'));
 			$res = $this->User_model->Validar($dataUser); 
-			
+			//die(var_dump($res));
 			foreach($res as $result)
 	        {
 	          	if (password_verify($dataRegister['senha'], $result->senha))
@@ -204,14 +202,14 @@ public function Login()
 		$this->load->view('adm/commons/footer');
 		
 			}else{
-			redirect(base_url('adm/login'));
+			redirect(base_url('login'));
 		}
 	}
 
 	public function EditarUser(){
 		
 		
-		$nivel_user = 1; //Nivel requirido para visualizar a pagina
+		$nivel_user = 2; //Nivel requirido para visualizar a pagina
 
 		if (($this->session->userdata('logged')) and ($this->session->userdata('id_tipo_usuario') <= $nivel_user)) {
 
@@ -302,7 +300,7 @@ public function Login()
 			$this->load->view('adm/commons/footer');
 
 		}else{// Se não estiver logado redireciona para tela de login..
-			redirect(base_url('adm/login'));
+			redirect(base_url('login'));
 		}
 
 		//Fim da função
@@ -343,15 +341,64 @@ public function Login()
 
 	public function EditarMyUser()
 	{
-		$data['error'] = null;
-		$data['success'] = null;
-		$user = array('id_usuario' => $this->session->userdata('id_usuario'));
-		$data['user'] = $this->Crud_model->Read('usuario',$user);
-		$data['cidades'] = $this->Crud_model->ReadAll('cidade');
-		$header['title'] = "Editar Profile";
-		$this->load->view('adm/commons/header', $header);
-		$this->load->view('adm/user/editar-my-user',$data);
-		$this->load->view('adm/commons/footer');	
+		$nivel_user = 2;
+		if (($this->session->userdata('logged')) and ($this->session->userdata('id_tipo_usuario') <= $nivel_user)) {
+			
+			$data['success'] = null;
+			$data['error'] = null;
+			
+			$this->form_validation->set_rules('nome','Nome','required|min_length[4]|trim');
+			$this->form_validation->set_rules('user','User','required|min_length[4]|alpha_dash|trim');
+    		$this->form_validation->set_rules('cidade','Cidade','required|is_natural_no_zero|trim',array('is_natural_no_zero' => 'Selecione uma cidade'));
+    		
+    			
+    		if($this->form_validation->run() == FALSE){
+				$data['error'] = validation_errors();
+				if ($data['error'] == NULL) {
+					/* Se a validação do dados ainda nao ocorreu, entao o que retorna 
+					no formulario é que conteudo do banco de dados*/
+					$user = array('id_usuario' => $this->session->userdata('id_usuario'));
+					$user = $this->Crud_model->Read('usuario',$user);
+					$data['dataRegister'] = array('nome' => $user->nome, 'user' => $user->user, 'cidade' => $user->id_cidade);
+    		
+				}
+				else{
+
+					$data['dataRegister'] = $this->input->post();
+					//die(var_dump($data['dataRegister']));
+					/* Se ocorreu, os dados retorna para os campos, para o usuario nao precisar digitar 
+					tudo novamente no formulario*/
+				}
+			}else{
+				$dataRegister = $this->input->post();
+
+				$dataModel = array(
+					'nome' => $dataRegister['nome'], 
+					'user' => $dataRegister['user'],
+					'id_cidade' => $dataRegister['cidade']);
+
+					$par = array('id_usuario' => $this->session->userdata('id_usuario'));
+					$res = $this->Crud_model->Update('usuario',$dataModel,$par);
+
+					$data['success'] = "Editado com sucesso";
+					$user = array('id_usuario' => $this->session->userdata('id_usuario'));
+					$user = $this->Crud_model->Read('usuario',$user);
+					$data['dataRegister'] = array('nome' => $user->nome, 'user' => $user->user, 'cidade' => $user->id_cidade);
+    		
+					
+			}
+
+				$id = array('id_usuario' => $this->session->userdata('id_usuario'));
+				$data['perfil'] = $this->Crud_model->Read('usuario',$id);
+				$data['cidades'] = $this->Crud_model->ReadAll('cidade');
+				$header['title'] = "Editar Profile";
+				$this->load->view('adm/commons/header', $header);
+				$this->load->view('adm/user/editar-my-user',$data);
+				$this->load->view('adm/commons/footer');
+
+		}else{
+			redirect(base_url('login'));
+		}	
 	}
 
 	public function Recortar()

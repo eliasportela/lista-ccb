@@ -20,30 +20,26 @@
                           	<div class="alert alert-danger" role="alert"><?=$error?></div>  
                         <?php endif; ?>
                           	<hr>
-							<form method="POST" action="<?=base_url('adm/editar-lista')?>">
-								<?php /*
-								<!--Select Regiao-->
-								<label for="regiao"><h4><strong>Região</strong></h4></label>
-								<div id="load_regiao">
-									<select class="form-control selectpicker" data-size="3" id="regiao" name="regiao" data-style="bg-primary" data-live-search="true" title="Selecione a Regiao" required="">
-									<?php foreach ($regioes as $regiao): ?>
-										<option value="<?=$regiao->id_regiao?>"
-										<?php if($regiao->id_regiao == $dataRegister['regiao']) {echo "selected"; } ?>
-										><?=$regiao->nome_regiao?></option>
+                         <form method="POST" action="<?=base_url('adm/editar-lista')?>">
+                          	<div class="row">
+								<div class="col-md-6">
+									<label for="mes"><h4><strong>Mês</strong></h4></label>
+									<select class="form-control selectpicker" data-size="3" id="mes" name="mes" data-style="bg-primary" data-live-search="true" required="">
+									<?php foreach ($meses as $mesLista): ?>
+										<option value="<?=$mesLista->id_mes?>" <?php if ($dataRegister['mes'] == $mesLista->id_mes): echo "selected"; endif; ?>><?=$mesLista->nome_mes?></option>
 									<?php endforeach ?>
 									</select>
 								</div>
-								*/ ?>
-								<!-- Data da Lista-->
-								
-								<label for="data"><h4><strong>Data da Lista</strong></h4></label>
-								<input type="date" class="form-control" name="data" id="data" required="" value="<?=$dataRegister['data']?>"> 
-								</br>
-								<!-- Id da Lista-->
-								<input type="hidden" name="id_lista" value="<?=$dataRegister['id_lista'];?>">
-								<a href="<?=base_url('adm/listas');?>" class="btn btn-lg btn-primary">Cancelar</a>
-								<button class="btn btn-lg btn-primary">Editar</button>
-							</form>
+								<div class="col-md-6">
+									<label for="data"><h4><strong>Ano</strong></h4></label>
+									<input type="number" class="form-control" name="data" id="data" min="2017" max="2040" value="<?=$dataRegister['data']?>">
+								</div>
+							</div>
+							</br><br>
+							<input type="hidden" name="id_lista" value="<?=$dataRegister['id_lista'];?>">
+							<a href="<?=base_url('adm/listas');?>" class="btn btn-lg btn-primary">Cancelar</a>
+							<button class="btn btn-lg btn-primary">Editar</button>
+						</form>
 						</div>
 						<div class="col-md-2"></div>
 					</div>

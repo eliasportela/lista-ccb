@@ -75,11 +75,27 @@ class Cidade extends CI_Controller {
 
 	if (($this->session->userdata('logged')) and ($this->session->userdata('id_tipo_usuario') <= $nivel_user)) {
 		
-		#usuarios
-		$sql = "SELECT c.id_cidade, c.nome_cidade, r.nome_regiao 
+		$this->form_validation->set_rules('cidade','Nome da Cidade','required|min_length[4]|trim');
+
+		if($this->form_validation->run() == FALSE){
+
+			$sql = "SELECT c.id_cidade, c.nome_cidade, r.nome_regiao 
 				FROM cidade c
 				INNER JOIN regiao r ON (c.id_regiao = r.id_regiao)
-				WHERE c.fg_ativo = 1 ORDER BY r.nome_regiao";
+				WHERE c.fg_ativo = 1 ORDER BY c.id_cidade desc limit 10";
+
+				$data['dataForm'] = ''; //Campo pesqusia vazio
+
+		}else {
+			$dataRegister = $this->input->post('cidade');
+
+			$sql = "SELECT c.id_cidade, c.nome_cidade, r.nome_regiao 
+				FROM cidade c
+				INNER JOIN regiao r ON (c.id_regiao = r.id_regiao)
+				WHERE c.fg_ativo = 1  and c.nome_cidade like '%$dataRegister%' ORDER BY c.nome_cidade desc limit 10";
+
+			$data['dataForm'] = $dataRegister; //Campo pesqusia com o que foi pesquisado
+		}
 		//consultando
 		$data['cidades'] = $this->Crud_model->Query($sql);
 
@@ -87,7 +103,6 @@ class Cidade extends CI_Controller {
 		$header['title'] = "Lista CCB | Cidades";
 		$this->load->view('adm/commons/header',$header);
 		$this->load->view('adm/cadastro/cidade/cidades',$data);
-		$this->load->view('adm/commons/footer');
 		
 			}else{
 			redirect(base_url('login'));

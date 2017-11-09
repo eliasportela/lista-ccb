@@ -1,19 +1,28 @@
 <section id="pesquisa"> 
     <div class="container-fluid">
-    <?php 
-    $cont = 0;
-    foreach ($cultos as $culto) { 
- ?>
         <div class="row" id="rdm">
             <div class="col-lg-12">
                 <div class="text-center">
-                    <h2 class="section-heading"><?=$culto['nome_servico']?></h2>
-                    <p><?=$regiao->nome_regiao;?></p>
+                    <h2><?=$regiao->nome_regiao;?></h2>
                     <hr>
                 </div>
+                  <?php 
+                    $cont = 0;
+                    foreach ($cultos as $culto) { 
+                 ?>
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
+                      <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading text-center"><h4 class="section-heading"><strong><?=$culto['nome_servico']?></strong></h4></div>
+                        <?php
+                        if ($culto[$cont] == null): ?>
+                          <div class="alert alert-danger text-center" role="alert">
+                          Desculpe-nos o incoveniente, ainda não temos nenhum cadastro para essa consulta.<br></div>
+                        <?php
+                            else:
+                        ?>
                         <table class="table table-responsive table-hover text-center">
                             <thead>
                                 <tr>
@@ -23,7 +32,7 @@
                                         <?php if($culto['id_servico'] != 5){
                                             echo "Ancião";
                                         }else{
-                                            echo "Encarregado";
+                                            echo "Enc.";
                                         } ?>
                                             
                                         </strong></h4></th>
@@ -31,14 +40,9 @@
                             </thead>
                             <tbody>
                             <?php
-                            if ($culto[$cont] == null): ?>
-                                <div class="alert alert-danger text-center" role="alert">
-                                    Desculpe-nos o incoveniente, ainda não temos cadastro para essa sua consulta.<br>
-                            <?php
-                            else:
                             foreach ($culto[$cont] as $resultado): // se nao for ensaio regional
                                 if($culto['id_servico'] != 5): ?>
-                                <tr>
+                                <tr <?php if($resultado->nome_cidade == false){echo 'class="info"';}?> > <!-- Inserir logica para o evento do facebook -->
                                     <td><h4><strong><?=$resultado->nome_cidade.' ('.$resultado->ds_igreja.')'?></strong></h4></td>
                                     <td><h4><strong><?=date('d-m', strtotime($resultado->data)) . ' ' . date("H:i",strtotime($resultado->horario))?></strong></h4></td>
                                     <td><h4><strong><?=$resultado->anciao?></strong></h4></td>
@@ -53,6 +57,8 @@
                             <?php endif; endforeach; endif; ?>
                             </tbody>
                         </table>
+                      </div>
+                      
                     </div>
                     <div class="col-md-2"></div>
                 </div>
@@ -116,8 +122,8 @@
                         </p>
                         <form method="POST" action="<?=base_url('assinatura')?>">
                             <select class="form-control selectpicker" data-size="4" data-live-search="true" id="regiao" name="regiao" data-style="bg-primary">                           
-                            <?php foreach ($regioes as $regiao): ?> 
-                                <option value="<?=$regiao->id_regiao?>"><?=$regiao->nome_regiao .' - '. $regiao->sigla_estado;?></option>
+                            <?php foreach ($regioes as $regiao2): ?> 
+                                <option value="<?=$regiao2->id_regiao?>" <?php if ($regiao2->id_regiao == $regiao->id_regiao): echo "selected"; endif; ?> > <?=$regiao2->nome_regiao .' - '. $regiao2->sigla_estado;?></option>
                             <?php endforeach ?>
                             </select>
                             <br><br>

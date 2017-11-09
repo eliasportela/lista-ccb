@@ -126,14 +126,72 @@ class Exibicao extends CI_Controller {
 
 	public function Profile()
 	{
+		
 		if (($this->session->userdata('logged')) and ($this->session->userdata('id_usuario'))): 
 
-		$data['user'] = $this->User_model->GetUser($this->session->userdata('id_usuario'));
-		$header['title'] = "Lista CCB"; 
+		$data['permissao'] = $this->session->userdata('id_tipo_usuario');
 
-		$this->load->view('adm/commons/header',$header);
+		$id_user = $this->session->userdata('id_usuario');
+		$data['user'] = $this->User_model->GetUser($id_user);
+		$data['title'] = "Lista CCB"; 
+		$data['id_page'] = "1"; 
+
+		$nome_user = explode(" ", $data['user']->nome);
+		$data['nome_user'] = $nome_user[0];
+		
+
+		//Pesquisar as Listas
+		$sql = "SELECT l.id_lista, m.nome_mes, l.data_lista, r.nome_regiao, u.user
+				FROM lista l
+				INNER JOIN regiao r ON (l.id_regiao = r.id_regiao)
+				INNER JOIN mes m ON (m.id_mes = l.mes_lista)
+				LEFT OUTER JOIN usuario u ON (l.id_usuario = u.id_usuario)
+				WHERE l.fg_ativo = 1 and u.id_usuario = $id_user ORDER BY l.id_lista DESC LIMIT 15";
+
+		//consultando
+		$data['listas'] = $this->Crud_model->Query($sql);
+
+		//Pesquisar as Listas Encaminhadas gerais
+		$sql = "SELECT l.id_pre_lista, m.nome_mes, l.data_lista, r.nome_regiao, u.user as remetente, l.file_lista
+				FROM pre_lista l
+				INNER JOIN regiao r ON (l.id_regiao = r.id_regiao)
+				INNER JOIN mes m ON (m.id_mes = l.mes_lista)
+				LEFT OUTER JOIN usuario u ON (l.id_remetente = u.id_usuario)
+				LEFT OUTER JOIN usuario d ON (l.id_destinatario = d.id_usuario)
+				WHERE l.fg_ativo = 1 and l.id_destinatario = 0 ORDER BY l.id_pre_lista";
+		$data['listasPendentes'] = $this->Crud_model->Query($sql);
+		
+		//Pesquisar as Listas Encaminhadas ao usuario
+		$sql = "SELECT l.id_pre_lista, m.nome_mes, l.data_lista, r.nome_regiao, u.user as remetente, l.file_lista
+				FROM pre_lista l
+				INNER JOIN regiao r ON (l.id_regiao = r.id_regiao)
+				INNER JOIN mes m ON (m.id_mes = l.mes_lista)
+				LEFT OUTER JOIN usuario u ON (l.id_remetente = u.id_usuario)
+				LEFT OUTER JOIN usuario d ON (l.id_destinatario = d.id_usuario)
+				WHERE l.fg_ativo = 1 and d.id_usuario = $id_user ORDER BY l.id_pre_lista";
+
+		$data['listasPendentesUser'] = $this->Crud_model->Query($sql);
+		
+		//die(var_dump($data['listasPendentesUser']));
+
+		//Contador de listas pendentes ao usuario
+		$sql = "SELECT count(*) as qtd
+				FROM pre_lista l
+				LEFT OUTER JOIN usuario u ON (l.id_destinatario = u.id_usuario)
+				WHERE l.fg_ativo = 1  and u.id_usuario = $id_user";
+
+		$data['qtdListasPendentes'] = $this->Crud_model->Query($sql);
+		$data['qtdListasPendentes'] = $data['qtdListasPendentes'][0]->qtd;
+		
+		//buscar historico dos usuarios
+		$sql = "SELECT u.nome, u.img_perfil, r.nome_regiao FROM lista l 
+			INNER JOIN regiao r ON (l.id_regiao = r.id_regiao) 
+			INNER JOIN usuario u ON (l.id_usuario = u.id_usuario)
+			where l.fg_ativo = 1 ORDER by l.id_lista desc limit 10";
+		$data['noticias'] = $this->Crud_model->Query($sql);	
+
 		$this->load->view('adm/user/profile', $data);
-		$this->load->view('commons/footer');
+		
 		
 		else:
 			redirect(base_url('login'));
@@ -191,43 +249,14 @@ class Exibicao extends CI_Controller {
 
  		}else{
 					
-				$this->load->library('email');
-	         
-		        //Inicia o processo de configuração para o envio do email
-		        $config['protocol'] = 'mail'; // define o protocolo utilizado
-		        $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
-		        $config['validate'] = TRUE; // define se haverá validação dos endereços de email
-		         
-		        $config['mailtype'] = 'html';
-		 
-		        // Inicializa a library Email, passando os parâmetros de configuração
-		        $this->email->initialize($config);
-		        
-		        // Define remetente e destinatário
-		        $this->email->from('contato@listaccb.com', 'Lista CCB'); // Remetente
-		        $this->email->to($email,$nome); // Destinatário
-		 
-		        // Define o assunto do email
-		        $dia = date('d-m-Y');
-		        $this->email->subject('Confirmação de Inscrição Lista CCB '.$dia);
-		 
-		        /*
-		         * Se o usuário escolheu o envio com template, passa o conteúdo do template para a mensagem
-		         * caso contrário passa somente o conteúdo do campo 'mensagem'
-		         */
-		        $this->email->message($this->load->view('adm/mail/msg-confirmacao',$data,TRUE));
-		         
-		        /*
-		         * Se o envio foi feito com sucesso, define a mensagem de sucesso
-		         * caso contrário define a mensagem de erro, e carrega a view home
-		         */
-		        $u = true;
-		        if($u/*$this->email->send()*/){
-		            $data['sucess'] = "Enviamos a Confirmação do seu cadastro em seu e-mail, verifique sua caixa de entrada.";
-		            $result = $this->Crud_model->Insert('contato',$dataModel);
-		         }else {
-		            $data['error'] = "Não conseguimos enviar confirmação para o e-mail ".$email;
-		        }
+				$this->load->library('myemail');
+				$dados = array("nome" => $nome, "email" => $email);
+				if($this->myemail->Cadastrar($dados)){
+						$result = $this->Crud_model->Insert('contato',$dataModel);
+						$data['sucess'] = "Enviamos a Confirmação do seu cadastro em seu e-mail, verifique sua caixa de entrada.";
+				 }else {
+						$data['error'] = "Não conseguimos enviar confirmação para o e-mail ".$email;
+				}
 
 		}
 

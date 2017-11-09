@@ -16,16 +16,22 @@
 							<hr>
 							<?php endif; ?>
 							<div class="row">
-								<div class=" col-md-2 text-left">
+								<div class=" col-md-2">
 									<a href="<?=base_url('profile#menu')?>" class="btn bg-primary"><i class="fa fa-chevron-left"></i> Voltar</a>
 								</div>
+							<form action="<?=base_url('adm/cidades')?>" method="post">
 								<div class="col-md-8">
-									<input type="text" class="form-control input-search" alt="lista-cidades" placeholder="Buscar nessa Lista">
+									<input type="text" class="form-control" alt="lista-cidades" placeholder="Buscar Cidade" name="cidade" value="<?=$dataForm?>" autofocus>
 								</div>
-								<div class=" col-md-2 text-right">
+								<div class=" col-md-2">
 									<a href="<?=base_url('adm/cadastro-cidade')?>" class="btn bg-primary">Nova Cidade <i class="fa fa-plus"></i></a>
 								</div>
 							</div>
+							<br>
+							<div class="row text-center">
+								<button class="btn btn-primary btn-lg">Pesquisar</button>
+							</div>
+							</form>
 							<br>
 							<table class="table table-responsive table-hover text-center">
 							<thead>
@@ -36,7 +42,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach ($cidades as $cidade): 
+
+								<?php if ($cidades):
+								foreach ($cidades as $cidade): 
 									?>
 									<tr>
 										<td><?=$cidade->nome_cidade;?></td>
@@ -47,7 +55,14 @@
 										<a onclick="return confirm('Deseja realmente excluir essa Cidade?');" 
 										href="<?=base_url('adm/remover-cidade?id='.$cidade->id_cidade)?>"><i class="fa fa-remove fa-2x" title="Remover Cidade"></i></a></td>
 									</tr>
-								<?php endforeach ?>
+								<?php endforeach;
+								else:  ?>
+									<tr>
+										<td></td>
+										<td><h3>Nenhuma Cidade Encontrada</h3></td>
+										<td></td>
+									</tr>
+								<?php endif; ?>
 								</tbody>
 							</table>
 						</div>

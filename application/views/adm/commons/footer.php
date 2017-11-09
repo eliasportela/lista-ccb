@@ -1,7 +1,3 @@
-
-
-      <!--  Rodape -->
-        
     <footer>
         <aside class="bg-primary">
             <div class="container text-center">
@@ -14,5 +10,5 @@
     </footer>
   </body>
 
-<script src = "<?=base_url('assets/vendor/bootstrap/js/bootstrap-select.min.js')?>"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"> </script>
 </html>
