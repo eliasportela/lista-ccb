@@ -3,4 +3,4 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 
-#application/logs/database.php
+application/config/database.php
