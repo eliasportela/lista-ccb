@@ -1,5 +1,3 @@
-	var base_url = "https://listaccb.com/adm/";
-
 	$(document).ready(function(){
 		//Igreja inicializando bloqueada
 		buscar_igreja();
@@ -14,7 +12,7 @@
 		jQuery('#inserirFile').submit(function(){
 			
 			var dados = new FormData(this);
-			pageurl = base_url + 'adm/lc/inserir-arquivo';
+			pageurl = base_urla + 'adm/lc/inserir-arquivo';
 		
 			$.ajax({
 			    url: pageurl,
@@ -46,7 +44,7 @@
 	  var cidade = city;
 	  console.log(cidade);
 	  if(regiao){
-        var url = base_url + 'adm/lc/buscar-cidade?id='+regiao+'&ci='+cidade;
+        var url = base_urla + 'adm/lc/buscar-cidade?id='+regiao+'&ci='+cidade;
         $.get(url, function(dataReturn) {
           $('#load_cidade').html(dataReturn);
           $('#cidade_sel').selectpicker('refresh');
@@ -58,7 +56,7 @@
 
     function atualizar_anciao(anciao){
     	var id_presbitero = anciao;
-	    var url = base_url + 'adm/lc/buscar-anciao?id='+id_presbitero;
+	    var url = base_urla + 'adm/lc/buscar-anciao?id='+id_presbitero;
         $.get(url, function(dataReturn) {
           $('#load_anciao').html(dataReturn);
           $('#anciao_sel').selectpicker('refresh');
@@ -67,7 +65,7 @@
 
      function atualizar_encarregado(encarregado){
      	var id_presbitero = encarregado;
-	    var url = base_url + 'adm/lc/buscar-encarregado?id='+id_presbitero;
+	    var url = base_urla + 'adm/lc/buscar-encarregado?id='+id_presbitero;
         $.get(url, function(dataReturn) {
           $('#load_encarregado').html(dataReturn);
           $('#encarregado_sel').selectpicker('refresh');
@@ -78,7 +76,7 @@
       var cidade = $('#cidade_sel').val();
       var igreja = id_igreja;
       if(cidade){
-        var url = base_url + 'adm/lc/buscar-igreja?id='+cidade;
+        var url = base_urla + 'adm/lc/buscar-igreja?id='+cidade;
         $.get(url, function(dataReturn) {
           $('#load_igreja').html(dataReturn);
           console.log('Cidade Atualizada');
@@ -95,7 +93,7 @@
 			'nome_cidade' : $("#cidade_nome_cidade").val(),
 			'id_regiao' : $("#cidade_id_regiao").val()
 		};
-		pageurl = base_url + 'adm/lc/inserir-cidade';
+		pageurl = base_urla + 'adm/lc/inserir-cidade';
 		$.ajax({
 			//url da pagina
 			url: pageurl,
@@ -129,7 +127,7 @@
 			'id_cidade' : $("#cidade_sel").val()
 		};
 		console.log(dadosajax);
-		pageurl = base_url + 'adm/lc/inserir-igreja';
+		pageurl = base_urla + 'adm/lc/inserir-igreja';
 		$.ajax({
 			//url da pagina
 			url: pageurl,
@@ -177,7 +175,7 @@
 			'nome_presbitero' : $("#presbitero_nome").val()
 		};
 
-		pageurl = base_url + 'adm/lc/inserir-presbitero';
+		pageurl = base_urla + 'adm/lc/inserir-presbitero';
 		
 		$.ajax({
 			//url da pagina
@@ -212,7 +210,7 @@
 			'nome_presbitero' : $("#presbitero_nome").val()
 		};
 
-		pageurl = base_url + 'adm/lc/inserir-presbitero';
+		pageurl = base_urla + 'adm/lc/inserir-presbitero';
 		
 		$.ajax({
 			//url da pagina
@@ -245,7 +243,7 @@
 		var dadosajax = {
 			'id_regiao' : $("#cidade_id_regiao").val()
 		};
-		pageurl = base_url + 'adm/lc/inserir-arquivo';
+		pageurl = base_urla + 'adm/lc/inserir-arquivo';
 		$.ajax({
 			//url da pagina
 			url: pageurl,
