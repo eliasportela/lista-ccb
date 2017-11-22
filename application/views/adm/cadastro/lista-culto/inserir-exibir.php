@@ -106,7 +106,7 @@
 									<a href="<?=base_url('adm/listas')?>" class="btn btn-primary"><i class="fa fa-chevron-left"></i> Voltar</a>
 								</div>
 								<div class=" col-sm-6 text-right">
-									<a href="#" data-toggle="modal" data-target="#Modal_Inserir_file" class="btn btn-primary">Inserir Arquivo <i class="fa fa-file-o"></i></a>
+									<a href="#" data-toggle="modal" data-target="#Modal_Inserir_file" class="btn btn-primary"><i class="fa fa-file-o"></i> Upload da Lista</a>
 									<a href="<?=base_url('adm/cadastro-lista')?>" class="btn btn-primary">Nova Lista <i class="fa fa-plus"></i></a>
 								</div>
 							</div>
@@ -280,29 +280,39 @@
     <div class="modal-dialog">
       <!-- Modal content-->
       <div class="modal-content">
+      	<form method="POST" action="" id="inserirFile">
         <div class="modal-header text-center">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h3 class="text-uppercase">Inserir Lista Digitalizada</h3>
+          <h4>Inserir Lista Digitalizada</h4>
         </div>
         <div class="modal-body">
         	<div class="row text-center">
         		<div class="col-sm-1"></div>
-        		<div class="col-sm-10">
-			  		<form method="POST" action="" id="inserirFile">
+        		<div class="col-sm-10">	
 			  		<!--Select -->
-				  		<div class="alert alert-info text-center" role="alert">
-				  			Os arquivos devem ser nos formatos (pdf, png, jpg, jpeg), serão aceitos apenas um arquivo. Se tiver mais de uma foto procure agrupar em um arquivo PDF. Caso precisar de ajuda, chamar no Grupo ADM - Lista CCB.   
-				  		</div>
-						<label for="prebitero"><h4><strong>Enviar Arquivo</strong></h4></label>
-						<input type="file" class="form-control" name="file" id="file" required>
-						<input type="hidden" name="file_id_lista" id="file_id_lista" value="<?=$lista['id_lista']?>"> 
-						</br>
-						<button class="btn btn-lg btn-primary" data-dismiss="modal">Cancelar</button>
-						<button class="btn btn-lg btn-primary" id="inserir_presbitero">Inserir</button>
-					</form>
+			  		<div class="alert alert-info text-center" role="alert">
+			  			Os arquivos devem ser nos formatos (pdf, png, jpg, jpeg). Se tiver mais de uma foto procure agrupar em um arquivo PDF.   
+			  		</div>
+			  		<div class="text-center">
+			  			<label for="file">Selecionar Arquivo</label>
+			  			<input type="file" class="form-control" name="file" id="file" required>
+			  		</div>
+			  		<br>
+			  		<?php if ($lista['file']): ?>
+			  		<label>Lista Inserida</label>
+		  			<div class="list-group">
+					  <a href="<?=base_url('/adm/uploads/listas/'.$lista['file'])?>" target="_blank" class="list-group-item"><i class="fa fa-file"></i> - Arquivo da lista <span class="pull-right" style="vertical-align: middle;"> Visualizar</span></a>
+					</div>
+			  		<?php endif ?>
+					<input type="hidden" name="file_id_lista" id="file_id_lista" value="<?=$lista['id_lista']?>"> 
 				</div>
 			</div>
 		</div>
+		<div class="modal-footer">
+			<button class="btn pull-left" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+			<button class="btn btn-primary pull-right" id="inserir_presbitero" type="submit">Inserir Arquivo</button>
+		</div>
+		</form>
       </div>
     </div>
   </div>
@@ -325,6 +335,6 @@
 
 
 
-<script src="<?=base_url('assets/js/adm/lista-culto3.js')?>"></script>
+<script src="<?=base_url('assets/js/adm/lista-culto2.js')?>"></script>
 
 

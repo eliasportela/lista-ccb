@@ -42,7 +42,7 @@ class ListaCulto extends CI_Controller {
 						$id = (int) $this->input->get('id');
 						$data['id_lc'] = $id;
 						// Buscando novmanete a lista pela id url
-						$sql = "SELECT l.id_lista, l.data_lista, r.id_regiao, r.nome_regiao, l.id_regiao, m.nome_mes
+						$sql = "SELECT l.id_lista, l.data_lista, r.id_regiao, r.nome_regiao, l.id_regiao, m.nome_mes, l.file_lista
 							FROM lista l
 							INNER JOIN regiao r ON (r.id_regiao = l.id_regiao)
 							INNER JOIN mes m ON (m.id_mes = l.mes_lista)
@@ -51,8 +51,8 @@ class ListaCulto extends CI_Controller {
 
 						// Se a url estiver correta
 						if($lista){ 
-							$data['lista'] = array('id_lista' => $lista[0]->id_lista,'data' => $lista[0]->data_lista, 'regiao' => $lista[0]->nome_regiao, 'id_regiao' => $lista[0]->id_regiao, 'mes' => $lista[0]->nome_mes);
-						//die(var_dump($lista[0]->id_lista));
+							$data['lista'] = array('id_lista' => $lista[0]->id_lista,'data' => $lista[0]->data_lista, 'regiao' => $lista[0]->nome_regiao, 'id_regiao' => $lista[0]->id_regiao, 'mes' => $lista[0]->nome_mes, 'file' => $lista[0]->file_lista);
+						//die(var_dump($lista));
 						}else{ // nao estando redireciona para a page
 							redirect(base_url('adm/listas'));
 						}
