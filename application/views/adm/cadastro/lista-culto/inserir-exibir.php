@@ -301,7 +301,7 @@
 			  		<?php if ($lista['file']): ?>
 			  		<label>Lista Inserida</label>
 		  			<div class="list-group">
-					  <a href="<?=base_url('/adm/uploads/listas/'.$lista['file'])?>" target="_blank" class="list-group-item"><i class="fa fa-file"></i> - Arquivo da lista <span class="pull-right" style="vertical-align: middle;"> Visualizar</span></a>
+					  <a href="<?=base_url('/uploads/listas/'.$lista['file'])?>" target="_blank" class="list-group-item"><i class="fa fa-file"></i> - Arquivo da lista <span class="pull-right" style="vertical-align: middle;"> Visualizar</span></a>
 					</div>
 			  		<?php endif ?>
 					<input type="hidden" name="file_id_lista" id="file_id_lista" value="<?=$lista['id_lista']?>"> 
